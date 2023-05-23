@@ -1,10 +1,10 @@
-site_name: asyNc 新闻检索系统
-site_description: 关于 asyNc 新闻检索系统的说明文档
-site_author: 刘铠铭 尚子智 宋曦轩 王博文 郑友捷
-site_url: https://kming-l.github.io/asyNc-docs/
+site_name: GifExplorer - 图片检索系统
+site_description: 关于 GifExplorer - 图片检索系统的说明文档
+site_author: 陈鑫圣 程思翔 李羽飞 刘竞暄 卢天彧
+site_url: https://chengsx21.github.io/GifExplorer-docs/
 
-repo_name: 'KMing-L/asyNc-docs'
-repo_url: 'https://github.com/KMing-L/asyNc-docs'
+repo_name: 'chengsx21/GifExplorer-docs'
+repo_url: 'https://github.com/chengsx21/GifExplorer-docs'
 
 theme:
   name: material
