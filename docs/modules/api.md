@@ -12,21 +12,7 @@
     ```json
     {
         "code": 1000,
-        "message": "NOT_FOUND",
-        "data": {}
-    }
-    ```
-
-=== "请求体格式错误"
-
-    例如，期望请求体是 JSON 格式，但解析 JSON 时出现错误，或缺少必要参数。
-
-    > `400 Bad Request`
-
-    ```json
-    {
-        "code": 1005,
-        "message": "INVALID_FORMAT",
+        "info": "NOT_FOUND",
         "data": {}
     }
     ```
@@ -38,54 +24,56 @@
     ```json
     {
         "code": 1001,
-        "message": "UNAUTHORIZED",
-        "data": {}
-    }
-    ```
-
-=== "外部错误"
-
-    数据库连接错误等外部错误。
-
-    > `500 Internal Server Error`
-
-    ```json
-    {
-        "code": 1002,
-        "message": "EXTERNAL_ERROR",
+        "info": "UNAUTHORIZED",
         "data": {}
     }
     ```
 
 === "内部错误"
 
-    其他错误类型没有覆盖到的服务器内部错误。
+    服务器内部错误。
 
     > `500 Internal Server Error`
 
     ```json
     {
         "code": 1003,
-        "message": "INTERNAL_ERROR",
+        "info": "INTERNAL_ERROR",
+        "data": {}
+    }
+    ```
+
+=== "请求体格式错误"
+
+    解析 JSON 请求体时缺少必要参数或出现错误。
+
+    > `400 Bad Request`
+
+    ```json
+    {
+        "code": 1005,
+        "info": "INVALID_FORMAT",
         "data": {}
     }
     ```
 
 ## 用户相关
 
-### POST /register
+
+### POST /user/register
 
 注册一个用户。
 
 === "请求"
 
-    请求附带 JSON 格式的正文。
-    样例：
+    请求正文样例：
 
     ```json
     {
         "user_name": "Alice",
-        "password": "Bob19937"
+        "password": "Hashed_Word",
+        "salt": "secret_salt", 
+        "mail": "mymail@163.com"
     }
     ```
 
@@ -94,19 +82,99 @@
     |字段|类型|必选|含义|
     |-|-|-|-|
     |`user_name`|字符串|是|用户名|
-    |`password`|字符串|是|密码|
+    |`password`|字符串|是|用户密码|
+    |`salt`|字符串|是|用户 salt|
+    |`mail`|字符串|是|用户邮箱|
 
 === "行为"
 
-    后端接受请求后，应当验证用户名是否重复、是否合法、密码是否合法（用户名与密码的合法性在前后端都需要验证）。
+    前端将用户名、加密后的密码与盐值传输到后端。
 
-    用户名与密码直接使用明文传输（由 HTTPS 保证安全性），但后端应将密码进行哈希后存储。
+    后端接受请求后，首先验证用户名是否重复、合法。
 
-    若用户名与密码都合法，则注册用户并返回登录 Token，否则返回错误信息。
+    若用户名与密码都合法，则向所给邮箱发送一封邮件，并创建一个待验证用户对象等待邮件校验；否则返回错误信息。
 
 === "响应"
 
-    - 成功注册用户
+    - 成功发送校验邮件
+
+        若成功发送用户注册校验邮件，则返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - 用户名重复或用户名待验证
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 1,
+            "info": "USER_NAME_CONFLICT",
+            "data": {}
+        }
+        ```
+
+    - 用户名格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 2,
+            "info": "INVALID_USER_NAME_FORMAT",
+            "data": {}
+        }
+        ```
+
+    - 密码格式不合法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 3,
+            "info": "INVALID_PASSWORD_FORMAT",
+            "data": {}
+        }
+        ```
+
+### POST /user/salt
+
+返回一个用户注册时的 salt。
+
+=== "请求"
+
+    请求正文样例：
+
+    ```json
+    {
+        "user_name": "Alice"
+    }
+    ```
+
+    各字段含义如下：
+
+    |字段|类型|必选|含义|
+    |-|-|-|-|
+    |`user_name`|字符串|是|用户名|
+
+=== "行为"
+
+    后端接受请求后，首先验证用户名是否合法，合法则返回用户 salt。
+
+=== "响应"
+
+    - 成功返回 salt
 
         若成功注册用户，则返回如下响应并转入已登录状态：
 
@@ -115,114 +183,18 @@
         ```json
         {
             "code": 0,
-            "message": "SUCCESS",
+            "info": "SUCCESS",
             "data": {
-                "id": 1,
-                "user_name": "Alice",
-                "token": "SECRET_TOKEN"
+                "salt": "SECRET_SALT"
             }
         }
         ```
 
-        其中 `data` 是一个字典，各字段含义如下：
+        各字段含义如下：
 
         |字段|类型|必选|含义|
         |-|-|-|-|
-        |`id`|整数|是|用户 ID|
-        |`user_name`|字符串|是|用户名|
-        |`token`|字符串|是|Bearer token|
-
-=== "错误"
-
-    - 用户名已占用
-
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 1,
-            "message": "USER_NAME_CONFLICT",
-            "data": {}
-        }
-        ```
-
-    - 用户名格式不合法
-
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 2,
-            "message": "INVALID_USER_NAME_FORMAT",
-            "data": {}
-        }
-        ```
-
-    - 密码格式不合法
-
-    > `400 Bad Request`
-
-    ```json
-    {
-        "code": 3,
-        "message": "INVALID_PASSWORD_FORMAT",
-        "data": {}
-    }
-    ```
-
-### POST /login
-
-尝试登录。
-
-=== "请求"
-
-    请求附带 JSON 格式的正文。
-    样例：
-
-    ```json
-    {
-        "user_name": "Alice",
-        "password": "Bob19937"
-    }
-    ```
-
-    正文的 JSON 包含一个字典，字典的各字段含义如下：
-
-    |字段|类型|必选|含义|
-    |-|-|-|-|
-    |`user_name`|字符串|是|用户名|
-    |`password`|字符串|是|密码|
-
-=== "行为"
-
-    后端接受请求后，验证用户是否存在，若是则验证密码的哈希与存储的密码哈希值是否匹配。
-    二者都通过则成功登录并返回 token，否则返回用户名**或**密码错误。
-
-=== "响应"
-
-    - 成功登录
-
-        > `200 OK`
-
-        ```json
-        {
-            "code": 0,
-            "message": "SUCCESS",
-            "data": {
-                "id": 1,
-                "user_name": "Alice",
-                "token": "SECRET_TOKEN"
-            }
-        }
-        ```
-
-        其中 `data` 是一个字典，各字段含义如下：
-
-        |字段|类型|必选|含义|
-        |-|-|-|-|
-        |`id`|整数|是|用户 ID|
-        |`user_name`|字符串|是|用户名|
-        |`token`|字符串|是|Bearer token|
+        |`salt`|字符串|是|用户 salt|
 
 === "错误"
 
@@ -233,19 +205,191 @@
         ```json
         {
             "code": 4,
-            "message": "WRONG_PASSWORD",
+            "info": "USER_NAME_NOT_EXISTS_OR_WRONG_PASSWORD",
             "data": {}
         }
         ```
 
-### POST /modifypassword
+### GET /user/verify/[token]
 
-修改密码接口。
+校验一个注册的用户。
 
 === "请求"
 
-    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+    无需请求正文。
 
+=== "行为"
+
+    后端检验 token 对应的待验证用户是否存在、未验证且处在待验证时间内。
+
+    满足这三个条件，则注册用户、将密码进行哈希后存储并返回登录 Token，否则返回错误信息。
+
+=== "响应"
+
+    - 成功校验用户
+
+        返回如下响应并转入已登录状态：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 1,
+                "user_name": "Alice",
+                "token": "SECRET_TOKEN"
+            }
+        }
+        ```
+
+        其中 `data` 是一个字典，各字段含义如下：
+
+        |字段|类型|必选|含义|
+        |-|-|-|-|
+        |`id`|整数|是|用户 ID|
+        |`user_name`|字符串|是|用户名|
+        |`token`|字符串|是|用户 token|
+
+=== "错误"
+
+    - 验证用户名不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 15,
+            "info": "INVALID_TOKEN",
+            "data": {}
+        }
+        ```
+
+    - 用户已经验证
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 16,
+            "info": "ALREADY_VERIFIED",
+            "data": {}
+        }
+        ```
+
+    - 长时间未验证需重新注册
+
+    > `400 Bad Request`
+
+    ```json
+    {
+        "code": 17,
+        "info": "TOO_LONG_TIME",
+        "data": {}
+    }
+    ```
+
+### POST /user/login
+
+用户登录。
+
+=== "请求"
+
+    请求正文样例：
+
+    ```json
+    {
+        "user_name": "Alice",
+        "password": "Bob19937"
+    }
+    ```
+
+    各字段含义如下：
+
+    |字段|类型|必选|含义|
+    |-|-|-|-|
+    |`user_name`|字符串|是|用户名|
+    |`password`|字符串|是|用户密码|
+
+=== "行为"
+
+    后端接受请求后，验证用户是否存在，若是则验证密码与存储的密码哈希值是否匹配。
+
+    二者都通过则成功登录并返回 token，否则返回用户名或密码错误。
+
+=== "响应"
+
+    - 成功登录
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 1,
+                "user_name": "Alice",
+                "token": "SECRET_TOKEN"
+            }
+        }
+        ```
+
+        其中 `data` 是一个字典，各字段含义如下：
+
+        |字段|类型|必选|含义|
+        |-|-|-|-|
+        |`id`|整数|是|用户 ID|
+        |`user_name`|字符串|是|用户名|
+        |`token`|字符串|是|用户 token|
+
+=== "错误"
+
+    - 用户名格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 2,
+            "info": "INVALID_USER_NAME_FORMAT",
+            "data": {}
+        }
+        ```
+
+    - 密码格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 3,
+            "info": "INVALID_PASSWORD_FORMAT",
+            "data": {}
+        }
+        ```
+
+    - 用户名或密码错误
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 4,
+            "info": "USER_NAME_NOT_EXISTS_OR_WRONG_PASSWORD",
+            "data": {}
+        }
+        ```
+
+### POST /user/modifypassword
+
+用户修改密码。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+    
     请求正文样例：
 
     ```json
@@ -261,14 +405,16 @@
     |字段|类型|必选|含义|
     |-|-|-|-|
     |`user_name`|字符串|是|用户名|
-    |`old_password`|字符串|是|旧密码|
-    |`new_password`|字符串|是|新密码|
+    |`old_password`|字符串|是|用户旧密码|
+    |`new_password`|字符串|是|用户新密码|
 
 === "行为"
 
     后端接受到请求之后，先检验 token 是否合理。
+
     如果合理，则判断 `old_password` 是否是该用户的原本密码。
-    如果原密码正确，则检验新密码是否符合格式，如果符合格式则进行修改。
+    
+    如果原密码正确，则检验新密码是否符合格式，最后进行修改。
 
 === "响应"
 
@@ -279,49 +425,167 @@
         ```json
         {
             "code": 0,
-            "message": "SUCCESS",
+            "info": "SUCCESS",
             "data": {}
         }
         ```
 
 === "错误"
 
-    - 原密码错误
+    - 用户名或密码错误
 
         > `400 Bad Request`
 
         ```json
         {
             "code": 4,
-            "message": "WRONG_PASSWORD",
+            "info": "USER_NAME_NOT_EXISTS_OR_WRONG_PASSWORD",
             "data": {}
         }
         ```
 
-    - 新密码格式不合法
+### POST /user/avatar
 
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 3,
-            "message": "INVALID_PASSWORD_FORMAT",
-            "data": {}
-        }
-        ```
-
-### POST /logout
-尝试登出该用户。
+修改用户头像。
 
 === "请求"
 
     请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
 
-    不需要附带其他内容。
+    请求正文是包含头像文件的 form-data 表单：
+
+    ```form-data
+        file: avatar_file
+    ```
 
 === "行为"
 
-    后端接受到请求之后，先检验 `token` 是否有效，如有效，将该用户登出。
+    后端接受到请求之后，先检验 token 是否有效。
+    
+    接下来判断上传头像文件是否存在，文件存在且格式正确则进行修改，并返回头像的 base64 编码。
+
+=== "响应"
+
+    - 修改成功
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 1,
+                "user_name": "Bob",
+                "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/=="
+            }
+        }
+        ```
+
+=== "错误"
+
+    - 图片不存在或格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 18,
+            "info": "AVATAR_FILE_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /user/avatar
+
+获取用户头像。
+
+=== "请求"
+
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，并返回相应用户头像的 base64 编码。
+
+=== "响应"
+
+    - 获取成功
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 1,
+                "user_name": "Bob",
+                "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/=="
+            }
+        }
+        ```
+
+=== "错误"
+
+    本 API 不应该出错。
+
+
+### POST /user/signature
+
+修改用户头像。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文样例：
+
+    ```json
+    {
+        "signature": "Hello world!"
+    }
+    ```
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，并修改用户签名。
+
+=== "响应"
+
+    - 修改成功
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 1,
+                "user_name": "Bob",
+                "signature": "Hello world!"
+            }
+        }
+        ```
+
+=== "错误"
+
+    本 API 不应该出错。
+
+### POST /user/logout
+
+登出用户。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 `token` 是否有效。如有效，将该用户登出。
 
 === "响应"
 
@@ -332,7 +596,7 @@
         ```json
         {
             "code": 0,
-            "message": "SUCCESS",
+            "info": "SUCCESS",
             "data": {}
         }
         ```
@@ -346,19 +610,20 @@
         ```json
         {
             "code": 1001,
-            "message": "UNAUTHORIZED",
+            "info": "UNAUTHORIZED",
             "data": {}
         }
         ```
 
-### POST /checklogin
-检查用户登陆状态。
+### POST /user/checklogin
+
+检查用户登录状态。
 
 === "请求"
 
-    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
 
-    不需要附带其他内容。
+    请求正文无需附带内容。
 
 === "行为"
 
@@ -373,7 +638,7 @@
         ```json
         {
             "code": 0,
-            "message": "SUCCESS",
+            "info": "SUCCESS",
             "data": {}
         }
         ```
@@ -387,155 +652,58 @@
         ```json
         {
             "code": 1001,
-            "message": "UNAUTHORIZED",
+            "info": "UNAUTHORIZED",
             "data": {}
         }
         ```
 
-### POST /modifyavatar
+### GET /user/profile/[user_id]
 
-修改用户头像。
+返回用户主页信息。
 
 === "请求"
 
-    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
-
-    请求正文form-data样例：
-
-    ```form-data
-        filename: bin_file
-    ```
-
-    各字段含义如下：
-
-    |字段|类型|必选|含义|
-    |-|-|-|-|
-    |`filename`|字符串|是|文件名|
-    |`bin_file`|二进制文件|是|二进制头像文件|
+    请求正文无需附带内容。
 
 === "行为"
 
-    后端接受到请求之后，先检验 token 是否有效。
-
-    如果有效。从`token`中解码出对应的用户名，修改该用户的头像。
+    后端接受到请求之后，先检验用户 id 是否有效，并返回用户相关信息。
 
 === "响应"
 
-    - 登录状态有效
+    - 用户存在
 
         > `200 OK`
 
         ```json
         {
             "code": 0,
-            "message": "SUCCESS",
+            "info": "SUCCESS",
             "data": {
                 "id": 1,
                 "user_name": "Bob",
                 "signature": "This is my signature.",
-                "tags": [
-                    "C++",
-                    "中年",
-                    "アニメ"
-                ],
-                "mail": "waifu@diffusion.com",
-                "avatar": "data:image/bmp;base64,Qk0+AgAAAAAAAD4AAAAoAAAAQAAAAEAAAAABAAEAAAAAAAACAAB0EgAAdBIAAAAAAAAAAAAAAAAAAP///wD/////////////////////////D+H///////n//z//////7///5/////+////5/////n/////////9/////7////P/////////77oAALnP///fsgAQnM///75wAAg9b///ePgACH6P//7y8AAAPv///ubgAAg8///9z0AAAA37///fgAAAA/3/+5/AAAAH/j//v+AAAA//f/+/8AAAD/+////4AAAf/7//f/wHgD////9wfh/gf//f/+//P/D/////n////+P/v/+f/////P+////////+f3////974H9/f////HOHv7z////zX/Pfg////+d//e8/////7v/+9////fff/////////8///tv///7vPf/X2////14bV/v//////9N3+7v/////73/b+//////ub5r7/////+57kvv/////7gPm+//////vP37z/////+/fXvP//////+d+9//////39//3//////f//+f/////+///7//////7///P//////3//5///////v//v///////f/5///////+/+P///////+fD/////////D///////////////////////////////////////////////////////////////////////////////////////////////////////////////w==",
-                "token": "SECRET_TOKEN"
-            }
-        }
-        ```
-
-=== "错误"
-
-    - 登陆状态失效
-
-        > `401 Unauthorized`
-
-        ```json
-        {
-            "code": 1001,
-            "message": "UNAUTHORIZED",
-            "data": {}
-        }
-        ```
-
-    - 数据格式错误或不合法
-
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 8,
-            "message": "POST_DATA_FORMAT_ERROR",
-            "data": {}
-        }
-        ```
-
-### POST /modifyuserinfo
-
-修改用户信息。
-
-=== "请求"
-
-    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
-
-
-    请求正文样例：
-
-    ```json
-    {
-        "old_user_name": "Alice",
-        "new_user_name": "Bob",
-        "signature": "This is my signature.",
-        "avatar": "data:image/bmp;base64,Qk0+AgAAAAAAAD4AAAAoAAAAQAAAAEAAAAABAAEAAAAAAAACAAB0EgAAdBIAAAAAAAAAAAAAAAAAAP///wD/////////////////////////D+H///////n//z//////7///5/////+////5/////n/////////9/////7////P/////////77oAALnP///fsgAQnM///75wAAg9b///ePgACH6P//7y8AAAPv///ubgAAg8///9z0AAAA37///fgAAAA/3/+5/AAAAH/j//v+AAAA//f/+/8AAAD/+////4AAAf/7//f/wHgD////9wfh/gf//f/+//P/D/////n////+P/v/+f/////P+////////+f3////974H9/f////HOHv7z////zX/Pfg////+d//e8/////7v/+9////fff/////////8///tv///7vPf/X2////14bV/v//////9N3+7v/////73/b+//////ub5r7/////+57kvv/////7gPm+//////vP37z/////+/fXvP//////+d+9//////39//3//////f//+f/////+///7//////7///P//////3//5///////v//v///////f/5///////+/+P///////+fD/////////D///////////////////////////////////////////////////////////////////////////////////////////////////////////////w==",
-        "mail": "waifu@diffusion.com"
-    }
-    ```
-
-    正文的 JSON 包含一个字典，字典的各字段含义如下：
-
-    |字段|类型|必选|含义|
-    |-|-|-|-|
-    |`signature`|字符串|否|用户签名|
-    |`old_user_name`|字符串|是|旧用户名|
-    |`new_user_name`|字符串|是|新用户名|
-    |`mail`|字符串|否|用户邮箱|
-    |`avatar`|字符串|否|用户头像|
-
-=== "行为"
-
-    后端接受到请求之后，先检验 token 是否有效。
-
-    如果有效。从`token`中解码出对应的用户名，并与请求体中的`old_user_name`进行比较。
-
-    如果原用户名正确，则检验新用户名是否符合格式，如果符合格式则更新用户信息。
-
-    原用户名的所有token将会全部过期，后端返回一个 JSON 格式的正文，包含更新后的用户信息与`token`。
-
-    理论上`tags`应当与修改前相同。
-
-=== "响应"
-
-    - 登录状态有效
-
-        > `200 OK`
-
-        ```json
-        {
-            "code": 0,
-            "message": "SUCCESS",
-            "data": {
-                "id": 1,
-                "user_name": "Bob",
-                "signature": "This is my signature.",
-                "tags": [
-                    "C++",
-                    "中年",
-                    "アニメ"
-                ],
-                "mail": "waifu@diffusion.com",
-                "avatar": "data:image/bmp;base64,Qk0+AgAAAAAAAD4AAAAoAAAAQAAAAEAAAAABAAEAAAAAAAACAAB0EgAAdBIAAAAAAAAAAAAAAAAAAP///wD/////////////////////////D+H///////n//z//////7///5/////+////5/////n/////////9/////7////P/////////77oAALnP///fsgAQnM///75wAAg9b///ePgACH6P//7y8AAAPv///ubgAAg8///9z0AAAA37///fgAAAA/3/+5/AAAAH/j//v+AAAA//f/+/8AAAD/+////4AAAf/7//f/wHgD////9wfh/gf//f/+//P/D/////n////+P/v/+f/////P+////////+f3////974H9/f////HOHv7z////zX/Pfg////+d//e8/////7v/+9////fff/////////8///tv///7vPf/X2////14bV/v//////9N3+7v/////73/b+//////ub5r7/////+57kvv/////7gPm+//////vP37z/////+/fXvP//////+d+9//////39//3//////f//+f/////+///7//////7///P//////3//5///////v//v///////f/5///////+/+P///////+fD/////////D///////////////////////////////////////////////////////////////////////////////////////////////////////////////w==",
-                "token": "SECRET_TOKEN"
+                "mail": "Bob21@163.com",
+                "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+                "followers": 191,
+                "following": 81,
+                "data": [
+                    {
+                        "id": 1,
+                        "title": "ILoveCakes",
+                        "width": 400,
+                        "height": 222,
+                        "category": "food",
+                        "tags": [
+                            "happy",
+                            "laugh",
+                            "sad"
+                        ],
+                        "duration": 1.8,
+                        "pub_time": "2023-04-18T04:11:07.785Z",
+                        "like": 0
+                    }
+                ]
             }
         }
         ```
@@ -546,87 +714,40 @@
         |-|-|-|-|
         |`id`|整数|是|用户 ID|
         |`user_name`|字符串|是|用户名|
-        |`signature`|字符串|是|用户签名|
-        |`tags`|字符串列表|是|用户标签|
+        |`signature`|字符串|是(可能为空)|用户签名|
         |`mail`|字符串|是|用户邮箱|
-        |`avatar`|字符串|是|用户头像|
-        |`token`|字符串|是|用于验证的令牌|
+        |`avatar`|字符串|是(可能为空)|用户头像|
+        |`followers`|字符串|是|用户粉丝数|
+        |`following`|字符串|是|用户关注数|
+        |`data`|数组|是|用户上传 Gif 信息|
 
 === "错误"
 
-    - 登陆状态失效
-
-        > `401 Unauthorized`
-
-        ```json
-        {
-            "code": 1001,
-            "message": "UNAUTHORIZED",
-            "data": {}
-        }
-        ```
-
-    - 原用户名错误
+    - 用户不存在
 
         > `400 Bad Request`
 
         ```json
         {
-            "code": 6,
-            "message": "WRONG_USERNAME",
+            "code": 12,
+            "info": "USER_NOT_FOUND",
             "data": {}
         }
         ```
 
-    - 新用户名格式不合法
+### GET /user/info/[user_id]
 
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 7,
-            "message": "INVALID_USERNAME_FORMAT",
-            "data": {}
-        }
-        ```
-
-    - 数据格式错误或不合法
-
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 8,
-            "message": "POST_DATA_FORMAT_ERROR",
-            "data": {}
-        }
-        ```
-
-    - 用户名已占用
-
-        > `400 Bad Request`
-
-        ```json
-        {
-            "code": 9,
-            "message": "USER_NAME_CONFLICT",
-            "data": {}
-        }
-        ```
-
-### GET /userinfo
-
-返回用户信息。
+返回简短的用户信息。
 
 === "请求"
 
-    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+    请求可以在请求头中携带 `Authorization` 字段，记录 `token` 值。
 
-    无需正文。
+    请求正文无需附带内容。
 
 === "行为"
 
-    后端接受到请求之后，先检验 token 是否有效，如果有效则返回用户签名与用户标签。
+    后端接受到请求之后，先检验 token 和 id 是否有效，如果有效则返回简短的用户信息。
 
 === "响应"
 
@@ -637,23 +758,13 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "id": 1,
             "user_name": "Bob",
             "signature": "This is my signature.",
-            "tags": [
-                {
-                    "key":"谢娜",
-                    "value":2,
-                },
-                {
-                    "key":"软工",
-                    "value":1,
-                }
-            ],
-            "mail": "waifu@diffusion.com",
-            "avatar": "data:image/bmp;base64,Qk0+AgAAAAAAAD4AAAAoAAAAQAAAAEAAAAABAAEAAAAAAAACAAB0EgAAdBIAAAAAAAAAAAAAAAAAAP///wD/////////////////////////D+H///////n//z//////7///5/////+////5/////n/////////9/////7////P/////////77oAALnP///fsgAQnM///75wAAg9b///ePgACH6P//7y8AAAPv///ubgAAg8///9z0AAAA37///fgAAAA/3/+5/AAAAH/j//v+AAAA//f/+/8AAAD/+////4AAAf/7//f/wHgD////9wfh/gf//f/+//P/D/////n////+P/v/+f/////P+////////+f3////974H9/f////HOHv7z////zX/Pfg////+d//e8/////7v/+9////fff/////////8///tv///7vPf/X2////14bV/v//////9N3+7v/////73/b+//////ub5r7/////+57kvv/////7gPm+//////vP37z/////+/fXvP//////+d+9//////39//3//////f//+f/////+///7//////7///P//////3//5///////v//v///////f/5///////+/+P///////+fD/////////D///////////////////////////////////////////////////////////////////////////////////////////////////////////////w==",
+            "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+            "is_followed": true
         }
     }
     ```
@@ -664,22 +775,23 @@
     |-|-|-|-|
     |`id`|整数|是|用户 ID|
     |`user_name`|字符串|是|用户名|
-    |`signature`|字符串|是|用户签名|
-    |`tags`|对象列表|是|用户标签|
-    |`mail`|字符串|是|用户邮箱|
-    |`avatar`|字符串|是|用户头像|
+    |`signature`|字符串|是(可能为空)|用户签名|
+    |`avatar`|字符串|是(可能为空)|用户头像|
+    |`is_followed`|布尔值|是|用户是否被关注|
 
-    `tags`是一个数组，其中每一个对象各字段含义如下：
-    |字段|类型|必选|含义|
-    |-|-|-|-|
-    |`key`|字符串|是|tags的内容|
-    |`value`|整数|是|tags的权值|
+=== "错误"
 
-    返回的`tags`数组应当按照`value`为关键字**从大到小**进行排序。
+    - 用户不存在
 
-    === "错误"
+        > `400 Bad Request`
 
-    本 API 不应该出错。
+        ```json
+        {
+            "code": 12,
+            "info": "USER_NOT_FOUND",
+            "data": {}
+        }
+        ```
 
 ## 新闻展示相关
 
@@ -716,7 +828,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 514,
@@ -768,7 +880,7 @@
     ```json
     {
         "code":0,
-        "message":'success',
+        "info":'success',
         "data":1145141919810
     }
     ```
@@ -836,7 +948,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "page_count": 15,
             "news": [
@@ -895,7 +1007,7 @@
         ```json
         {
             "code": 5,
-            "message": "INVALID_PAGE",
+            "info": "INVALID_PAGE",
             "data": {}
         }
         ```
@@ -945,7 +1057,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "suggestions": [
                 "Hello world again!",
@@ -994,7 +1106,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "news": [
                 {
@@ -1066,7 +1178,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "page_count": 15,
             "news": [
@@ -1111,7 +1223,7 @@
         ```json
         {
             "code": 5,
-            "message": "INVALID_PAGE",
+            "info": "INVALID_PAGE",
             "data": {}
         }
         ```
@@ -1147,7 +1259,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {}
     }
     ```
@@ -1161,7 +1273,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```
@@ -1195,7 +1307,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 114,
@@ -1236,7 +1348,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```
@@ -1275,7 +1387,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "page_count": 15,
             "news": [
@@ -1322,7 +1434,7 @@
         ```json
         {
             "code": 5,
-            "message": "INVALID_PAGE",
+            "info": "INVALID_PAGE",
             "data": {}
         }
         ```
@@ -1356,7 +1468,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 114,
@@ -1398,7 +1510,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```
@@ -1432,7 +1544,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 114,
@@ -1474,7 +1586,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```
@@ -1513,7 +1625,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": {
             "page_count": 15,
             "news": [
@@ -1560,7 +1672,7 @@
         ```json
         {
             "code": 5,
-            "message": "INVALID_PAGE",
+            "info": "INVALID_PAGE",
             "data": {}
         }
         ```
@@ -1594,7 +1706,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 114,
@@ -1636,7 +1748,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```
@@ -1670,7 +1782,7 @@
     ```json
     {
         "code": 0,
-        "message": "SUCCESS",
+        "info": "SUCCESS",
         "data": [
             {
                 "id": 114,
@@ -1712,7 +1824,7 @@
         ```json
         {
             "code": 9,
-            "message": "NEWS_NOT_FOUND",
+            "info": "NEWS_NOT_FOUND",
             "data": {}
         }
         ```

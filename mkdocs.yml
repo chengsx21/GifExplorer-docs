@@ -91,5 +91,4 @@ nav:
       - 爬虫: modules/spider.md
       - 检索: modules/search.md
       - 前端: modules/frontend.md
-      - AI: modules/ai.md
-      - Django 后端: modules/django.md
+      - 后端: modules/django.md

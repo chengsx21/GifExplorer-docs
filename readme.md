@@ -1,1 +1,1 @@
-[asyNc 新闻检索系统](https://kming-l.github.io/asyNc-docs/)
+[GifExplorer 图片检索系统](https://chengsx21.github.io/GifExplorer-docs/)
