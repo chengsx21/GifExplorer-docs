@@ -1,75 +1,123 @@
 # 数据库设计
 
-## 新闻数据库
-
 使用 PostgreSQL，设计了如下表结构：
 
-```SQL
-                                        Table "public.news"
-    Column     |           Type           | Collation | Nullable |             Default              
----------------+--------------------------+-----------+----------+----------------------------------
- id            | integer                  |           | not null | nextval('news_id_seq'::regclass)
- news_url      | text                     |           |          | 
- media         | character varying(20)    |           |          | 
- category      | character varying(20)    |           |          | 
- tags          | character varying(30)[]  |           |          | 
- title         | character varying(200)   |           |          | 
- description   | text                     |           |          | 
- content       | text                     |           |          | 
- first_img_url | text                     |           |          | 
- pub_time      | timestamp with time zone |           |          | 
-Indexes:
-    "news_pkey" PRIMARY KEY, btree (id)
-    "news_news_url_key" UNIQUE CONSTRAINT, btree (news_url)
-```
+## **`User Table`**
 
-## 用户新闻数据库
+### `UserInfo`
 
-```SQL
-                                        Table "public.news"
-    Column     |           Type           | Collation | Nullable |             Default              
----------------+--------------------------+-----------+----------+----------------------------------
- id            | integer                  |           | not null | 
- news_id       | integer                  |           |          | 
- cite_count    | integer                  |           |          | 
- ai_processed  | boolean                  |           |          | 
- data          | jsonb                    |           |          | 
-```
+| Name                 | Type            | Attribution                              |
+| :------------------: | :-------------: | :--------------------------------------: |
+| `id`                 | `BigAutoField`  | `primary_key=true`                       |
+| `user_name`          | `CharField`     | `max_length=12, unique=True`             |
+| `password`           | `CharField`     | `max_length=20`                          |
+| `salt`               | `CharField`     | `max_length=40`                          |
+| `signature`          | `CharField`     | `max_length=200, blank=True`             |
+| `mail`               | `CharField`     | `max_length=100, blank=True`             |
+| `register_time`      | `DateTimeField` | `auto_now_add=True`                      |
+| `avatar`             | `TextField`     | `blank=True`                             |
+| `followings`         | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `followers`          | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `favorites`          | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `tags`               | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `comment_favorites`  | `JSONField`     | `null=True, blank=True, default=list`    |
+| `read_history`       | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `search_history`     | `JSONField`     | `null=True, blank=True, default=dict`    |
+| `task_history`       | `JSONField`     | `null=True, blank=True, default=dict`    |
 
-## 用户数据库
+### `UserVerification`
 
-```SQL
-                                        Table "public.news"
-    Column     |           Type           | Collation | Nullable |             Default              
----------------+--------------------------+-----------+----------+----------------------------------
- id            | integer                  |           | not null | 
- tags          | jsonb                    |           |          | 
- user_name     | character varying(12)    |           | not null | 
- password      | character varying(40)    |           | not null | 
- signature     | character varying(200)   |           |          | 
- mail          | character varying(100)   |           |          | 
- avatar        | text                     |           |          | 
- register_date | timestamp with time zone |           |          | 
- favorites     | jsonb                    |           |          | 
- readlist      | jsonb                    |           |          | 
- read_history  | jsonb                    |           |          | 
- search_history| jsonb                    |           |          | 
-```
+| Name                 | Type            | Attribution                              |
+| :------------------: | :-------------: | :--------------------------------------: |
+| `user_name`          | `CharField`     | `max_length=12, unique=True`             |
+| `token`              | `CharField`     | `null=True, blank=True, max_length=60`   |
+| `mail`               | `CharField`     | `null=True, blank=True, max_length=100`  |
+| `is_verified`        | `BooleanField`  | `default=False`                          |
+| `password`           | `CharField`     | `null=True, blank=True, max_length=20`   |
+| `salt`               | `CharField`     | `null=True, blank=True, max_length=40`   |
+| `created_at`         | `DateTimeField` | `default=None, null=True, blank=True`    |
 
-## 索引数据库
+### `UserToken`
 
-```SQL
-    Column     |           Type           | Collation | Nullable |             Default              
----------------+--------------------------+-----------+----------+----------------------------------
- news_id       | integer                  |           | not null |
- news_url      | text                     |           | not null | 
- media         | text                     |           |          | 
- category      | character varying(20)    |           |          | 
- tags          | character varying(30)[]  |           |          | 
- title         | character varying(200)   |           |          | 
- description   | text                     |           |          | 
- content       | text                     |           |          | 
- first_img_url | text                     |           |          | 
- pub_time      | timestamp with time zone |           |          | 
-```
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+| `user_id`            | `PositiveIntegerField`  | `default=0`                              |
+| `token`              | `CharField`             | `max_length=200`                         |
 
+## **`Gif Table`**
+
+### `GifMetadata`
+
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+|`id`                  | `AutoField`             | `primary_key=True`                       |
+|`name`                | `CharField`             | `null=True, blank=True, max_length=200`  |
+|`title`               | `CharField`             | `max_length=200`                         |
+|`width`               | `PositiveIntegerField`  | `default=0`                              |
+|`height`              | `PositiveIntegerField`  | `default=0`                              |
+|`duration`            | `FloatField`            | `default=0.0`                            |
+|`uploader`            | `PositiveIntegerField`  | `default=1`                              |
+|`category`            | `CharField`             | `null=True, blank=True, max_length=20`   |
+|`tags`                | `JSONField`             | `null=True, blank=True, default=list`    |
+|`likes`               | `PositiveIntegerField`  | `default=0`                              |
+|`pub_time`            | `DateTimeField`         | `auto_now_add=True`                      |
+
+### `GifFile`
+
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+|`file`                | `ImageField`            | `upload_to='gifs/'`                      |
+|`metadata`            | `OneToOneField`         | `GifMetadata, on_delete=models.CASCADE`  |
+
+### `GifComment`
+
+| Name     | Type                  | Attribution                                                                      |
+| :------: | :-------------------: | :------------------------------------------------------------------------------: |
+|`id`      | `AutoField`           | `primary_key=True`                                                               |
+|`metadata`| `ForeignKey`          | `GifMetadata, on_delete=models.CASCADE, related_name='comments'`                 |
+|`parent`  | `ForeignKey`          | `'self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies'`|
+|`user`    | `ForeignKey`          | `UserInfo, on_delete=models.CASCADE`                                             |
+|`content` | `TextField`           | `max_length=200`                                                                 |
+|`likes`   | `PositiveIntegerField`| `default=0`                                                                      |
+|`pub_time`| `DateTimeField`       | `auto_now_add=True`                                                              |
+
+### `GifFingerprint`
+
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+|`gif_id`              | `PositiveIntegerField`  | `default=0`                              |
+|`fingerprint`         | `CharField`             | `max_length=64, unique=True`             |
+
+### `GifShare`
+
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+|`token`               | `TextField`             | `max_length=200`                         |
+|`gif_ids`             | `JSONField`             | `default=list`                           |
+|`pub_time`            | `DateTimeField`         | `auto_now_add=True`                      |
+
+
+## **`Message Table`**
+
+### `Message`
+
+| Name         | Type                    | Attribution                                                            |
+| :----------: | :---------------------: | :--------------------------------------------------------------------: |
+|`sender`      | `ForeignKey`            | `UserInfo, on_delete=models.CASCADE, related_name='sent_messages'`     |
+|`receiver`    | `ForeignKey`            | `UserInfo, on_delete=models.CASCADE, related_name='received_messages'` |
+|`message`     | `TextField`             | `max_length=200`                                                       |
+|`is_read`     | `BooleanField`          | `default=False`                                                        |
+|`task_time`   | `DateTimeField`         | `auto_now_add=True`                                                    |
+
+## **`Task Table`**
+
+### `TaskInfo`
+
+| Name                 | Type                    | Attribution                              |
+| :------------------: | :---------------------: | :--------------------------------------: |
+|`id`                  | `BigAutoField`          | `primary_key=True`                       |
+|`task_id`             | `CharField`             | `null=True, blank=True, max_length=200`  |
+|`task_type`           | `CharField`             | `max_length=200`                         |
+|`task_status`         | `CharField`             | `max_length=200`                         |
+|`task_time`           | `DateTimeField`         | `auto_now_add=True`                      |
+|`task_result`         | `JSONField`             | `null=True, blank=True, default=dict`    |
