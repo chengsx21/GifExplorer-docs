@@ -2,9 +2,11 @@
 
 使用 PostgreSQL，设计了如下表结构：
 
-## **`User Table`**
+## **`User 数据表`**
 
 ### `UserInfo`
+
+存储用户个人信息。
 
 | Name                 | Type            | Attribution                              |
 | :------------------: | :-------------: | :--------------------------------------: |
@@ -27,6 +29,8 @@
 
 ### `UserVerification`
 
+用户注册时用于邮件验证。
+
 | Name                 | Type            | Attribution                              |
 | :------------------: | :-------------: | :--------------------------------------: |
 | `user_name`          | `CharField`     | `max_length=12, unique=True`             |
@@ -39,14 +43,18 @@
 
 ### `UserToken`
 
+存储用户登录后的 `token` 状态。
+
 | Name                 | Type                    | Attribution                              |
 | :------------------: | :---------------------: | :--------------------------------------: |
 | `user_id`            | `PositiveIntegerField`  | `default=0`                              |
 | `token`              | `CharField`             | `max_length=200`                         |
 
-## **`Gif Table`**
+## **`Gif 数据表`**
 
 ### `GifMetadata`
+
+存储 Gif 的元数据，与 Gif 文件是分开存储的。
 
 | Name                 | Type                    | Attribution                              |
 | :------------------: | :---------------------: | :--------------------------------------: |
@@ -64,12 +72,16 @@
 
 ### `GifFile`
 
+存储 Gif 文件，使用外键与 `GifMetadata` 关联。
+
 | Name                 | Type                    | Attribution                              |
 | :------------------: | :---------------------: | :--------------------------------------: |
 |`file`                | `ImageField`            | `upload_to='gifs/'`                      |
 |`metadata`            | `OneToOneField`         | `GifMetadata, on_delete=models.CASCADE`  |
 
 ### `GifComment`
+
+存储 Gif 的评论，为实现二级评论，使用外键将 `parent` 字段关联到自身。
 
 | Name     | Type                  | Attribution                                                                      |
 | :------: | :-------------------: | :------------------------------------------------------------------------------: |
@@ -83,6 +95,8 @@
 
 ### `GifFingerprint`
 
+上传 Gif 时，使用 `fingerprint` 字段存储 Gif 的哈希值，判断是否重复。
+
 | Name                 | Type                    | Attribution                              |
 | :------------------: | :---------------------: | :--------------------------------------: |
 |`gif_id`              | `PositiveIntegerField`  | `default=0`                              |
@@ -90,14 +104,17 @@
 
 ### `GifShare`
 
+存储 Gif 分享链接的有效期信息。
+
 | Name                 | Type                    | Attribution                              |
 | :------------------: | :---------------------: | :--------------------------------------: |
 |`token`               | `TextField`             | `max_length=200`                         |
 |`gif_ids`             | `JSONField`             | `default=list`                           |
 |`pub_time`            | `DateTimeField`         | `auto_now_add=True`                      |
 
+## **`Message 数据表`**
 
-## **`Message Table`**
+存储用户间的私信信息。
 
 ### `Message`
 
@@ -109,7 +126,9 @@
 |`is_read`     | `BooleanField`          | `default=False`                                                        |
 |`task_time`   | `DateTimeField`         | `auto_now_add=True`                                                    |
 
-## **`Task Table`**
+## **`Task 数据表`**
+
+存储用户非阻塞任务的状态信息。
 
 ### `TaskInfo`
 
