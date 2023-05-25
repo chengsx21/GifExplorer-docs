@@ -441,7 +441,7 @@
 
     请求正文是包含头像文件的 form-data 表单：
 
-    ```form-data
+    ```json
     {
         "file": avatar_file
     }
@@ -797,7 +797,6 @@
         }
         ```
 
-
 ## **GIF 管理相关 /image**
 
 ### POST /upload
@@ -810,7 +809,7 @@
 
     请求正文是包含 Gif 文件的 form-data 表单：
 
-    ```form-data
+    ```json
     {
         "file": gif_file
         "title": "Pretty Cat"
@@ -938,7 +937,7 @@
 
     请求正文是包含 Gif 文件的 form-data 表单：
 
-    ```form-data
+    ```json
     {
         "file": gif_file
         "title": "Pretty Cat"
@@ -1007,7 +1006,7 @@
 
     请求正文是包含视频文件的 form-data 表单：
 
-    ```form-data
+    ```json
     {
         "file": video_file,
         "title": "Pretty Cat",
