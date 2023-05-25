@@ -2,6 +2,7 @@ site_name: GifExplorer - 图片检索系统
 site_description: 关于 GifExplorer - 图片检索系统的说明文档
 site_author: 陈鑫圣 程思翔 李羽飞 刘竞暄 卢天彧
 site_url: https://chengsx21.github.io/GifExplorer-docs/
+copyright: Copyright © 2023 [Nullptr]
 
 repo_name: 'chengsx21/GifExplorer-docs'
 repo_url: 'https://github.com/chengsx21/GifExplorer-docs'
@@ -32,8 +33,8 @@ theme:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
-      accent: teal
+      primary: light blue
+      accent: indigo
       toggle:
         icon: material/weather-sunny
         name: Switch to dark mode
@@ -45,7 +46,7 @@ theme:
         icon: material/weather-night
         name: Switch to light mode
   logo: assets/avatar.png
-  favicon: images/asyNc.png
+  favicon: images/logo.svg
   language: zh
 
 extra:

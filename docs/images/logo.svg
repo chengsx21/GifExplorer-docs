@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 86.07193939953208 86.07193939953208" height="86.07193939953208" width="86.07193939953208">
+    <g id="icon-0"><svg viewBox="0 0 86.07193939953208 86.07193939953208" height="86.07193939953208"
+            width="86.07193939953208">
+            <g>
+                <path
+                    d="M0 43.036c0-23.768 19.268-43.036 43.036-43.036 23.768 0 43.036 19.268 43.036 43.036 0 23.768-19.268 43.036-43.036 43.036-23.768 0-43.036-19.268-43.036-43.036zM43.036 82.661c21.884 0 39.625-17.741 39.625-39.625 0-21.884-17.741-39.625-39.625-39.625-21.884 0-39.625 17.741-39.625 39.625 0 21.884 17.741 39.625 39.625 39.625z"
+                    data-fill-palette-color="accent" fill="#87c0cd" stroke="transparent"></path>
+                <ellipse rx="42.60561000276838" ry="42.60561000276838" cx="43.03596969976604"
+                    cy="43.03596969976604" fill="#87c0cd" stroke="transparent" stroke-width="0" fill-opacity="1"
+                    data-fill-palette-color="accent"></ellipse>
+            </g>
+            <g transform="matrix(1,0,0,1,23.66842950526313,23.65882259048411)"><svg
+                    viewBox="0 0 38.73508038900582 38.754294218563864" height="38.754294218563864"
+                    width="38.73508038900582">
+                    <g><svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+                            xmlns:cc="http://creativecommons.org/ns#"
+                            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                            xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+                            xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                            preserveAspectRatio="xMidYMid" viewBox="0 0 63 63.03125" version="1.1" x="0" y="0"
+                            height="38.754294218563864" width="38.73508038900582" class="icon-_$-0"
+                            data-fill-palette-color="quaternary" id="_$-0">
+                            <path
+                                d="M9.5 0C4.253 0 0 4.25 0 9.5L0 53.531C0 58.781 4.253 63.031 9.5 63.031L53.5 63.031C58.747 63.031 63 58.781 63 53.531L63 9.5C63 4.25 58.747 0 53.5 0L9.5 0zM10 3L17 3 17 60.031 10 60.031 10 3zM20 3L35 3 35 60.031 20 60.031 20 3zM38 3L53.5 3C57.09 3 60 5.908 60 9.5L60 53.531C60 57.123 57.09 60.031 53.5 60.031L38 60.031 38 3zM6.969 3.5C6.978 3.496 6.991 3.504 7 3.5L7 59.531C4.653 58.55 3 56.236 3 53.531L3 9.5C3 6.806 4.636 4.487 6.969 3.5z"
+                                fill="#ffffff" fill-rule="evenodd" data-fill-palette-color="quaternary"></path>
+                        </svg></g>
+                </svg></g>
+        </svg></g>
+</svg>
