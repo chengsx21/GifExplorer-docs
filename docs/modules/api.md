@@ -1539,6 +1539,430 @@
 
     本 API 不应该出现错误。
 
+### POST /image/like/[gif_id]
+
+点赞 Gif。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，若 Gif 存在，且用户未对该 Gif 点赞，则进行点赞。
+
+=== "响应"
+
+    - 成功点赞
+
+        成功点赞 Gif，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - Gif 已被点赞过
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 5,
+            "info": "INVALID_LIKES",
+            "data": {}
+        }
+        ```
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/cancellike/[gif_id]
+
+取消点赞 Gif。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，若 Gif 存在，且用户已对该 Gif 点赞，则取消点赞。
+
+=== "响应"
+
+    - 成功取消点赞
+
+        成功取消点赞 Gif，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - Gif 未被点赞过
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 5,
+            "info": "INVALID_LIKES",
+            "data": {}
+        }
+        ```
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/comment/[gif_id]
+
+评论 Gif。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文样例：
+
+    ```json
+    {
+        "content": "这是一条子评论",
+        "parent_id": 10
+    }
+    ```
+    ```json
+    {
+        "content": "这是一条父评论"
+    }
+    ```
+
+    其中 `parent_id` 为可选字段，表示该评论以 `id` 为 `parent_id` 的评论为二级评论。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。如果 Gif 存在，依据评论等级作出不同行为：
+    
+    如果评论为二级评论，先检验相应的一级评论是否存在。若存在，则创建一条二级评论。
+    
+    如果评论为一级评论，直接创建一条一级评论。
+
+=== "响应"
+
+    - 成功评论
+
+        成功评论 Gif，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {
+                "id": 2,
+                "user": "Alice",
+                "content": "你说得对，但是……",
+                "pub_time": "2023-04-15T14:41:21.525Z"
+            }
+        }
+        ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+    - 父评论不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 11,
+            "info": "COMMENTS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### DELETE /image/comment/delete/[comment_id]
+
+删除 Gif 评论。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。
+    
+    如果评论存在，且评论发送者为该用户，则删除评论。
+
+=== "响应"
+
+    - 成功删除评论
+
+        成功删除 Gif 评论，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - 评论不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 11,
+            "info": "COMMENTS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/comment/[gif_id]
+
+获取 Gif 的所有评论。
+
+=== "请求"
+
+    请求可以在请求头中携带 Authorization 字段，记录 token 值，判断评论是否被当前用户点赞。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，若 Gif 存在，且用户已对该 Gif 点赞，则取消点赞。
+
+=== "响应"
+
+    - 成功获取评论
+
+        成功获取 Gif 评论，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": [
+                {
+                    "id": 2,
+                    "user": "Alice",
+                    "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+                    "content": "这是一条测试评论",
+                    "pub_time": "2023-04-16T07:32:50.906Z",
+                    "like": 0,
+                    "is_liked": false,
+                    "replies": []
+                },
+                {
+                    "id": 1,
+                    "user": "Alice",
+                    "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+                    "content": "这是一条测试评论",
+                    "pub_time": "2023-04-16T07:32:49.948Z",
+                    "like": 1,
+                    "is_liked": true,
+                    "replies": [
+                        {
+                            "id": 3,
+                            "user": "Alice",
+                            "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+                            "content": "这是一条测试评论",
+                            "pub_time": "2023-04-16T07:32:55.238Z",
+                            "like": 0,
+                            "is_liked": false
+                        }
+                    ]
+                }
+            ]
+        }
+        ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/comment/like/[comment_id]
+
+点赞评论。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，若评论存在，且用户未对该评论点赞，则进行点赞。
+
+=== "响应"
+
+    - 成功点赞
+
+        成功点赞评论，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - 评论已被点赞过
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 5,
+            "info": "INVALID_LIKES",
+            "data": {}
+        }
+        ```
+
+    - 评论不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 11,
+            "info": "COMMENTS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/comment/cancellike/[comment_id]
+
+取消点赞评论。
+
+=== "请求"
+
+    请求需要在请求头中携带 Authorization 字段，记录 token 值。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，若评论存在，且用户已对该评论点赞，则取消点赞。
+
+=== "响应"
+
+    - 成功取消点赞
+
+        成功取消点赞评论，返回如下响应：
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "SUCCESS",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - 评论未被点赞过
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 5,
+            "info": "INVALID_LIKES",
+            "data": {}
+        }
+        ```
+
+    - 评论不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 11,
+            "info": "COMMENTS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
 ## GIF 管理相关
 
 ### GET /allnews
