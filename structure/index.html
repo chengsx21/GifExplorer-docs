@@ -20,7 +20,7 @@
       
         <link rel="next" href="../implement/">
       
-      <link rel="icon" href="../images/asyNc.png">
+      <link rel="icon" href="../images/logo.svg">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
@@ -65,7 +65,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="indigo">
   
     
     
@@ -93,7 +93,7 @@
   <nav class="md-header__inner md-grid" aria-label="页眉">
     <a href=".." title="GifExplorer - 图片检索系统" class="md-header__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
       
-  <img src="../assets/avatar.png" alt="logo">
+  <img src="../images/logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -122,7 +122,7 @@
             
             
             
-            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
             
               <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
@@ -279,7 +279,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="GifExplorer - 图片检索系统" class="md-nav__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
       
-  <img src="../assets/avatar.png" alt="logo">
+  <img src="../images/logo.svg" alt="logo">
 
     </a>
     GifExplorer - 图片检索系统
@@ -666,32 +666,42 @@
 
 <h1 id="_1">需求分析<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>用户端：</p>
+<p>支持用户信息管理</p>
 <ul>
-<li>提供 Gif 主页展示功能<ul>
-<li>可以浏览个性推荐、站点精选的最新 Gif</li>
+<li>修改密码，头像，个性签名</li>
+<li>查看 Gif 浏览历史</li>
+<li>查看 Gif 上传历史</li>
 </ul>
-</li>
-<li>提供 Gif 检索功能<ul>
-<li>检索结果默认按相关度排序</li>
-<li>可以添加标题、作者、分类、标签等过滤条件</li>
+<p>支持用户多元化社交</p>
+<ul>
+<li>提供个性推荐 Gif</li>
+<li>Gif 详情页支持点赞、评论</li>
+<li>提供创作者关注功能</li>
+<li>提供用户私信界面，创作者上传 Gif 后实时私信通知</li>
 </ul>
-</li>
-<li>点击相应 Gif 后直接跳转至对应的 Gif 详情页</li>
-<li>支持用户管理个人信息<ul>
-<li>密码，头像，个性签名</li>
+<p>支持 Gif 图片管理</p>
+<ul>
+<li>批量管理上传 Gif</li>
+<li>支持 Gif 条件筛选</li>
+<li>支持水印、压缩等扩展服务</li>
+<li>支持外链单张、批量下载 Gif</li>
 </ul>
-</li>
-<li>用户可以查看浏览历史</li>
-<li>用户可以将希望查看的新闻添加至稍后再看列表</li>
-<li>用户可以收藏新闻<ul>
-<li>系统可以为用户收藏的新闻进行智能摘要</li>
+<p>提供 Gif 检索功能  </p>
+<ul>
+<li>提供多种搜索模式</li>
+<li>正确分词，提供用户输入纠错、预测等搜索词处理</li>
+<li>检索结果按相关度依次排序</li>
+<li>支持添加标题、作者、分类、标签等过滤条件</li>
+<li>搜索响应高效，缓存使用合理</li>
+<li>检索结果页用户美观易用</li>
 </ul>
-</li>
+<p>实现 Gif 及时更新</p>
+<ul>
+<li>部署 Gif 爬虫及时更新 Gif 信息</li>
 </ul>
 <h2 id="_3">用例分析<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<p>为了更好的展示用户需求，我们可以从用户角度画出如下用例图：</p>
-<p><img alt="用例图" src="../images/%E7%94%A8%E4%BE%8B%E5%9B%BE.png" /></p>
+<p>为更好地展示用户需求，可以从用户角度得到如下用例图：</p>
+<p><img alt="用例图" src="../images/%E7%94%A8%E4%BE%8B%E5%9B%BE.svg" /></p>
 
 
 
@@ -716,6 +726,10 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2023 [Nullptr]
+    </div>
   
   
     Made with
