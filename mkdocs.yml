@@ -45,7 +45,7 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to light mode
-  logo: assets/avatar.png
+  logo: images/logo.svg
   favicon: images/logo.svg
   language: zh
 
