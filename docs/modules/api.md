@@ -454,7 +454,9 @@
     请求正文是包含头像文件的 form-data 表单：
 
     ```form-data
-        file: avatar_file
+    {
+        "file": avatar_file
+    }
     ```
 
 === "行为"
@@ -528,7 +530,6 @@
 === "错误"
 
     本 API 不应该出错。
-
 
 ### POST /user/signature
 
@@ -1965,97 +1966,819 @@
 
 ## GIF 管理相关
 
-### GET /allnews
+### POST /image/upload
 
-返回主页新闻。
+上传 Gif。
 
 === "请求"
 
     请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
 
-    请求需要携带参数，参数名称为`category`，其中`category`代表新闻类别。
+    请求正文是包含 Gif 文件的 form-data 表单：
 
-    示例：
-
-    ```shell
-    "/allnews?category=home"
+    ```form-data
+    {
+        "file": gif_file
+        "title": "Pretty Cat"
+        "category": "animals"
+        "tags": ["funny", "cat"]
+    }
     ```
-
-    现在支持的新闻类别暂定为`home、sport、tech、game、health、fashion、ent`等内容，详见`asyNc-web/dics/web-db`
 
 === "行为"
 
-    后端接受到请求之后，先检验 token 是否有效，如果有效则返回相应类别下的新闻内容，是否按用户进行喜好筛选由后期决定。
-
-    **一次返回新闻不应该超过200条，按时间顺序返回最新的前200条**
+    后端接受到请求之后，先检验 token 是否有效。
+    
+    若经过 Hash 检测得该 Gif 已经被上传过, 直接返回相应 Gif 的 id，否则返回 Gif 内容。
 
 === "响应"
 
     > `200 OK`
 
-    返回一个 JSON 格式的正文，包含新闻对象的数组。
+    若 Gif 已经被上传过
 
     ```json
     {
         "code": 0,
         "info": "SUCCESS",
-        "data": [
-            {
-                "id": 514,
-                "title": "Breaking News",
-                "url": "https://breaking.news",
-                "picture_url": "https://breaking.news/picture.png",
-                "media": "Foobar News",
-                "pub_time": "2022-10-21T19:02:16.305Z",
-                "is_favorite": false,
-                "is_readlater": true,
-            }
-        ]
+        "data": {
+            "id": 514,
+            "duplication": true
+        }
     }
     ```
 
-    其中`data`是对应类别的新闻组，其中每个对象各字段含义如下：
+    Gif 未被上传过
 
-    |字段|类型|必选|含义|
-    |:-|-|-|-|
-    |`id`|整数|是|新闻 ID|
-    |`title`|字符串|是|新闻标题|
-    |`url`|字符串|是|新闻网址|
-    |`picture_url`|字符串|允许为null|新闻图片 URL|
-    |`media`|字符串|是|媒体|
-    |`pub_time`|字符串|是|新闻发布时间|
-    |`is_favorite`|布尔|是|在收藏中|
-    |`is_readlater`|布尔|是|在阅读列表中|
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "id": 514,
+            "duplication": false
+        }
+    }
+    ```
 
 === "错误"
 
-    本 API 不应该出错。
+    - Gif 不存在或格式非法
 
-### GET/newscount
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 10,
+            "info": "INVALID_GIF",
+            "data": {}
+        }
+        ```
+
+### POST /image/update/[gif_id]
+
+更改 Gif 类别标签信息。
 
 === "请求"
 
-    无需特殊请求头
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+    请求正文样例：
+
+    ```json
+    {
+        "category": "animals",
+        "tags": ["funny", "cat"]
+    }
+    ```
 
 === "行为"
 
-    返回当前爬虫数据库中新闻总量
+    后端接受到请求之后，先检验 token 是否有效。如果有效则更新 Gif 内容。
+
+=== "响应"
+
+    > `200 OK`
+
+    Gif 信息更改成功
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "id": 514
+        }
+    }
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/resize
+
+压缩并上传 Gif。
+
+=== "请求"
+
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+    请求正文是包含 Gif 文件的 form-data 表单：
+
+    ```form-data
+    {
+        "file": gif_file
+        "title": "Pretty Cat"
+        "category": "animals"
+        "tags": ["funny", "cat"]
+        "ratio": "0.8"
+    }
+    ```
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。如果有效则创建 Gif 压缩任务。
+
+=== "响应"
+
+    > `200 OK`
+
+    任务创建成功
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "task_id": "ec1e476d-4f95-4d5e-94f3-b094de82c500",
+            "task_status": "PENDING"
+        }
+    }
+    ```
+
+=== "错误"
+
+    - Gif 不存在或格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 10,
+            "info": "INVALID_GIF",
+            "data": {}
+        }
+        ```
+
+    - 压缩比例不为 0 ~ 1 浮点数
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 21,
+            "info": "INVALID_RATIO",
+            "data": {}
+        }
+        ```
+
+### POST /image/video
+
+上传视频转 Gif。
+
+=== "请求"
+
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+    请求正文是包含视频文件的 form-data 表单：
+
+    ```form-data
+    {
+        "file": video_file,
+        "title": "Pretty Cat",
+        "category": "animals"
+        "tags": ["funny", "cat"]
+    }
+    ```
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。如果有效则创建视频转换任务。
+
+=== "响应"
+
+    > `200 OK`
+
+    任务创建成功
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "task_id": "ec1e476d-4f95-4d5e-94f3-b094de82c500",
+            "task_status": "PENDING"
+        }
+    }
+    ```
+
+=== "错误"
+
+    - 视频不存在或格式非法
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 19,
+            "info": "INVALID_VIDEO",
+            "data": {}
+        }
+        ```
+
+### POST /image/watermark/[gif_id]
+
+Gif 添加水印。
+
+=== "请求"
+
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+    无需附带请求正文。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。如果用户为 Gif 上传者则创建水印添加任务。
+
+=== "响应"
+
+    > `200 OK`
+
+    任务创建成功
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "task_id": "ec1e476d-4f95-4d5e-94f3-b094de82c500",
+            "task_status": "PENDING"
+        }
+    }
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/taskcheck
+
+检查用户非阻塞任务状态。
+
+=== "请求"
+
+    请求需要在请求头中携带 `Authorization` 字段，记录 `token` 值。
+
+    无需附带请求正文。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效。
+    
+    返回当前用户所有任务的状态，如果成功同时返回任务结果。
+
+=== "响应"
+
+    > `200 OK`
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": {
+            "task_count": 5,
+            "task_data": [
+                {
+                    "task_id": "ec1e476d-4f95-4d5e-94f3-b094de82c500",
+                    "task_type": "resize",
+                    "task_status": "STARTED",
+                    "task_time": "2023-04-15T13:56:38.484Z"
+                },
+                {
+                    "task_id": "ec1e476d-4f95-4d5e-94f3-b094de82c500",
+                    "task_type": "watermark",
+                    "task_status": "STARTED",
+                    "task_time": "2023-04-15T13:57:38.484Z"
+                },
+                {
+                    "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                    "task_type": "video",
+                    "task_status": "SUCCESS",
+                    "task_time": "2023-04-15T13:58:38.484Z",
+                    "task_result": {
+                        "id": 6
+                    }
+                }
+            ]
+        }
+    }
+    ```
+
+    `task_status` 有 `SATRTED`，`SUCCESS`，`FAILURE` 状态。
+
+    `task_type` 有三种格式：`resize`，`watermark`，`video`。
+
+    - Gif resize
+
+        === "成功压缩上传"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "resize",
+                "task_status": "SUCCESS",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "id": 234,
+                    "duplication": false
+                }
+            }
+            ```
+
+        === "重复压缩上传"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "resize"
+                "task_status": "SUCCESS",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "id": 234,
+                    "duplication": true
+                }
+            }
+            ```
+
+        === "压缩失败"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "resize",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z"
+            }
+            ```
+
+        === "压缩超时"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "resize",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "code": 23,
+                    "info": "TOO_LONG_TIME"
+                }
+            }
+            ```
+
+    - Gif watermark
+
+        === "成功添加水印"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "watermark",
+                "task_status": "SUCCESS",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "id": 234
+                }
+            }
+            ```
+
+        === "Gif 过小"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "watermark",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "id": 234,
+                    "code": 20,
+                    "info": "GIF_TOO_SMALL"
+                }
+            }
+            ```
+
+        === "添加水印失败"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "watermark",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z"
+            }
+            ```
+
+        === "添加水印超时"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "watermark",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "code": 23,
+                    "info": "TOO_LONG_TIME"
+                }
+            }
+            ```
+
+    - Gif video
+
+        === "成功转换视频"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "video",
+                "task_status": "SUCCESS",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "id": 234,
+                    "duplication": false
+                }
+            }
+            ```
+
+        === "视频转换失败"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "video",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z"
+            }
+            ```
+
+        === "视频转换超时"
+
+            ```json
+            {
+                "task_id": "efe4811e-bdbf-49e0-80ad-a93749159cd0",
+                "task_type": "video",
+                "task_status": "FAILURE",
+                "task_time": "2023-04-15T13:58:38.484Z",
+                "task_result": {
+                    "code": 23,
+                    "info": "TOO_LONG_TIME"
+                }
+            }
+            ```
+
+=== "错误"
+
+    本 API 不应返回错误。
+
+### GET /image/detail/[gif_id]
+
+返回 Gif 信息。
+
+=== "请求"
+
+    可以在请求头中携带 `Authorization` 字段来记录 token，可通过 token 来判断 Gif 是否被当前用户点赞。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 Gif id 是否有效，并返回 Gif 相关信息。
+
+=== "响应"
+
+    - Gif 存在
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "Succeed",
+            "data": {
+                "gif_data": {
+                    "id": 344,
+                    "title": "gif with tags: cute",
+                    "uploader": "spider",
+                    "width": 312,
+                    "height": 300,
+                    "category": "cute",
+                    "tags": [
+                        "cute", "cat"
+                    ],
+                    "duration": 1.92,
+                    "pub_time": "2023-05-10T10:52:35.620Z",
+                    "like": 0,
+                    "is_liked": false
+                },
+                "user_data": {
+                    "id": 38,
+                    "user_name": "spider",
+                    "signature": "",
+                    "mail": "gifexplorer_spider@126.com",
+                    "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAABBmlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGCSYAACFgMGhty8kqIgdyeFiMgoBQYkkJhcXMCAGzAyMHy7BiIZGC7r4lGHC3CmpBYnA+kPQFxSBLQcaGQKkC2SDmFXgNhJEHYPiF0UEuQMZC8AsjXSkdhJSOzykoISIPsESH1yQRGIfQfItsnNKU1GuJuBJzUvNBhIRwCxDEMxQxCDO4MTGX7ACxDhmb+IgcHiKwMD8wSEWNJMBobtrQwMErcQYipAP/C3MDBsO1+QWJQIFmIBYqa0NAaGT8sZGHgjGRiELzAwcEVj2oGICxx+VQD71Z0hHwjTGXIYUoEingx5DMkMekCWEYMBgyGDGQCSpUCz8yM2qAABAABJREFUeJzk/Vmzbdl1Hoh93xhzrrV2c7rbZt5MZIMu0RAgKJIig0VSpa4kMUoul0vh0IPDoQi7XuwIh3+M3yocDkf4QU1VOaSyJFOiRLJEASTRkgAJIIHsM+/N299zzm7WWnOOMfyw9jn3ZuZNIBNIUCVrBCLz5ME+e88912zG+MY3vsH4HwIVGEfzoajXhcY83evGu10P+qo/XW22Q81mXbXcz/==",
+                    "followers": 5,
+                    "following": 3,
+                    "register_time": "2023-05-10T10:34:42.789Z",
+                    "is_followed": true
+                }
+            }
+        }
+        ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### DELETE /image/detail/[gif_id]
+
+删除 Gif。
+
+=== "请求"
+
+    需要在请求头中携带 `Authorization` 字段来记录 token。
+
+    请求正文无需附带内容。
+
+=== "行为"
+
+    后端接受到请求之后，先检验 token 是否有效，并删除相应 Gif。
+
+=== "响应"
+
+    - 删除 Gif 成功
+
+        > `200 OK`
+
+        ```json
+        {
+            "code": 0,
+            "info": "Succeed",
+            "data": {}
+        }
+        ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/previewlow/[gif_id]
+
+低分辨率预览 Gif。
+
+=== "请求"
+
+    无需附带请求正文。
+
+=== "行为"
+
+    返回低分辨率 Gif 内容进行预览。
 
 === "响应"
 
     > 200 OK
 
-    返回一个json格式的正文，包含新闻总量
+    返回一个 HttpResponse 格式的 FileWrapper。
+
+    ```python
+    ...
+    file_wrapper = FileWrapper(gif_file)
+    response = HttpResponse(file_wrapper, content_type='image/gif')
+    response['Content-Disposition'] = f'inline; filename="{gif.name}"'
+    return response
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/preview/[gif_id]
+
+预览 Gif。
+
+=== "请求"
+
+    无需附带请求正文。
+
+=== "行为"
+
+    返回 Gif 内容进行预览。
+
+=== "响应"
+
+    > 200 OK
+
+    返回一个 HttpResponse 格式的 FileWrapper。
+
+    ```python
+    ...
+    file_wrapper = FileWrapper(gif_file)
+    response = HttpResponse(file_wrapper, content_type='image/gif')
+    response['Content-Disposition'] = f'inline; filename="{gif.name}"'
+    return response
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/download/[gif_id]
+
+下载 Gif。
+
+=== "请求"
+
+    无需附带请求正文。
+
+=== "行为"
+
+    返回 Gif 内容进行下载。
+
+=== "响应"
+
+    > 200 OK
+
+    返回一个 HttpResponse 格式的 FileWrapper。
+
+    ```python
+    ...
+    file_wrapper = FileWrapper(gif_file)
+    response = HttpResponse(file_wrapper, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{gif.title}.gif"'
+    return response
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### POST /image/downloadzip
+
+批量下载 Gif。
+
+=== "请求"
+
+    请求正文样例：
 
     ```json
     {
-        "code":0,
-        "info":'success',
-        "data":1145141919810
+        "gif_ids": [1, 2, 3, 4]
     }
     ```
 
-    其中`data`即为数据库新闻总量，类型为`number`
+=== "行为"
+
+    返回相应 id 的 Gif 进行下载。
+
+=== "响应"
+
+    > 200 OK
+
+    返回一个 HttpResponse 格式的 ZipFile
+
+    ```python
+    ...
+    with zipfile.ZipFile(zip_buffer, mode='w') as zip_file:
+    for gif in gifs:
+        gif_file = open(gif.giffile.file.path, 'rb')
+        zip_file.writestr(f"{gif.title}.gif", gif_file.read())
+        gif_file.close()
+    response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+    time = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    response['Content-Disposition'] = f'attachment; filename="{time}.zip"'
+    return response
+    ```
+
+=== "错误"
+
+    - Gif 不存在
+
+        > `400 Bad Request`
+
+        ```json
+        {
+            "code": 9,
+            "info": "GIFS_NOT_FOUND",
+            "data": {}
+        }
+        ```
+
+### GET /image/gifscount
+
+批量下载 Gif。
+
+=== "请求"
+
+    无需附带请求正文。
+
+=== "行为"
+
+    返回数据库中 Gif 总量。
+
+=== "响应"
+
+    > 200 OK
+
+    返回数据库中 Gif 总量。
+
+    ```json
+    {
+        "code": 0,
+        "info": "SUCCESS",
+        "data": 79473
+    }
+    ```
 
 === "错误"
 
