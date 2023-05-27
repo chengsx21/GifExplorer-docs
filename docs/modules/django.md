@@ -95,6 +95,7 @@
 先检查 `token` 是否有效。
 
 #### 将`token`移除
+
 实现函数： `main.helpers.delete_token_from_white_list(token)`
 
 将 `token` 移除白名单。
