@@ -18,14 +18,14 @@
         <link rel="prev" href="../database/">
       
       
-        <link rel="next" href="../spider/">
+        <link rel="next" href="../search-api/">
       
       <link rel="icon" href="../../images/logo.svg">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
-        <title>接口设计 - GifExplorer - 图片检索系统</title>
+        <title>通用接口 - GifExplorer - 图片检索系统</title>
       
     
     
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              接口设计
+              通用接口
             
           </span>
         </div>
@@ -443,6 +443,43 @@
     
   
   
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          接口设计
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          接口设计
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -452,12 +489,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          接口设计
+          通用接口
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        接口设计
+        通用接口
       </a>
       
         
@@ -828,58 +865,31 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#gif-image_2" class="md-nav__link">
-    GIF 检索相关 /image
-  </a>
-  
-    <nav class="md-nav" aria-label="GIF 检索相关 /image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#post-search" class="md-nav__link">
-    POST /search
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-searchsuggest" class="md-nav__link">
-    POST /search/suggest
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-searchhotwords" class="md-nav__link">
-    POST /search/hotwords
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-createlinkgif_id" class="md-nav__link">
-    GET /createlink/[gif_id]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-imagecreateziplink" class="md-nav__link">
-    POST /image/createziplink
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search-api/" class="md-nav__link">
+        搜索接口
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1363,54 +1373,6 @@
           <li class="md-nav__item">
   <a href="#post-commentcancellikecomment_id" class="md-nav__link">
     POST /comment/cancellike/[comment_id]
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gif-image_2" class="md-nav__link">
-    GIF 检索相关 /image
-  </a>
-  
-    <nav class="md-nav" aria-label="GIF 检索相关 /image">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#post-search" class="md-nav__link">
-    POST /search
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-searchsuggest" class="md-nav__link">
-    POST /search/suggest
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-searchhotwords" class="md-nav__link">
-    POST /search/hotwords
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-createlinkgif_id" class="md-nav__link">
-    GET /createlink/[gif_id]
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-imagecreateziplink" class="md-nav__link">
-    POST /image/createziplink
   </a>
   
 </li>
@@ -4481,480 +4443,6 @@
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;COMMENTS_NOT_FOUND&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<h2 id="gif-image_2"><strong>GIF 检索相关 /image</strong><a class="headerlink" href="#gif-image_2" title="Permanent link">&para;</a></h2>
-<h3 id="post-search">POST /search<a class="headerlink" href="#post-search" title="Permanent link">&para;</a></h3>
-<p>搜索 Gif。</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="47:4"><input checked="checked" id="__tabbed_47_1" name="__tabbed_47" type="radio" /><input id="__tabbed_47_2" name="__tabbed_47" type="radio" /><input id="__tabbed_47_3" name="__tabbed_47" type="radio" /><input id="__tabbed_47_4" name="__tabbed_47" type="radio" /><div class="tabbed-labels"><label for="__tabbed_47_1">请求</label><label for="__tabbed_47_2">行为</label><label for="__tabbed_47_3">响应</label><label for="__tabbed_47_4">错误</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>请求正文样例：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;keyword&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cat picture&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span><span class="nt">&quot;range&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">}}},</span>
-<span class="w">        </span><span class="p">{</span><span class="nt">&quot;range&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">}}},</span>
-<span class="w">        </span><span class="p">{</span><span class="nt">&quot;range&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;gte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;lte&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">}}}</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;animal&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;animal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cat&quot;</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;perfect&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>各字段含义如下：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>必选</th>
-<th>默认值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code>title</code></td>
-<td>搜索使用的指标</td>
-</tr>
-<tr>
-<td><code>keyword</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code></code></td>
-<td>搜索关键词</td>
-</tr>
-<tr>
-<td><code>filter</code></td>
-<td>数组</td>
-<td>否</td>
-<td><code>[]</code></td>
-<td>Gif 尺寸、时长</td>
-</tr>
-<tr>
-<td><code>category</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code></code></td>
-<td>Gif 类别</td>
-</tr>
-<tr>
-<td><code>tags</code></td>
-<td>数组</td>
-<td>否</td>
-<td><code>[]</code></td>
-<td>Gif 标签</td>
-</tr>
-<tr>
-<td><code>type</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code>partial</code></td>
-<td>搜索模式</td>
-</tr>
-<tr>
-<td><code>page</code></td>
-<td>整数</td>
-<td>否</td>
-<td>1</td>
-<td>页码</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>
-<p><code>target</code> 和 <code>keyword</code> 必须都非空串，或者都为空串才合法。</p>
-</li>
-<li>
-<p><code>target</code> 必须为 <code></code>，<code>uploader</code>，<code>title</code> 三者之一。</p>
-</li>
-<li>
-<p><code>type</code> 必须为 <code>perfect</code>，<code>partial</code>，<code>fuzzy</code>，<code>regex</code>，<code>related</code> 之一。</p>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>后端接收到请求后，向搜索后端发送查询关键词的搜索请求，返回指定页码的搜索结果，以及该搜索词的结果页数。</p>
-<p>一页定义为 10 条搜索结果，页码从 1 开始计数。</p>
-<p>若 <code>page</code> 不为正整数则应当报错，错误响应在下面定义。</p>
-<p>若 <code>page</code> 为正整数则总是正常响应，即使对应的页码并没有搜索结果也是如此。此时返回的 Gif 列表为空。</p>
-<ul>
-<li>
-<p><code>target</code> 和 <code>keyword</code></p>
-<ul>
-<li>
-<p>如果 <code>type</code> 不为 <code>regex</code>：</p>
-<ul>
-<li>
-<p>若 <code>target</code> 和 <code>keyword</code> 同时为空串，表示没有本项限制。</p>
-</li>
-<li>
-<p>恰有一者为空，返回格式错误。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>如果 <code>type</code> 为 <code>regex</code>：</p>
-<ul>
-<li>
-<p><code>target</code> 必须为 <code>uploader</code>，<code>title</code> 之一，缺省值为 <code>title</code>。</p>
-</li>
-<li>
-<p><code>keyword</code> 若为空串，表示没有本项限制。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>若 <code>filter</code> 为空数组，表示没有本项限制。</p>
-</li>
-<li>
-<p>若 <code>category</code> 为空串，表示没有本项限制。</p>
-</li>
-<li>
-<p><code>tags</code></p>
-<ul>
-<li>
-<p>若 <code>tags</code> 为空数组，表示没有本项限制。</p>
-</li>
-<li>
-<p>请求的每个 <code>tag</code> 在返回的图片中都包含。换言之，请求的 <code>tags</code> 是返回的每个图片的 <code>tags</code> 的子集。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><code>type</code></p>
-<ul>
-<li>
-<p>若 <code>type</code> 为 <code>perfect</code>，则进行精确匹配搜索（默认选项）；</p>
-</li>
-<li>
-<p>若 <code>type</code> 为 <code>partial</code>，则进行部分匹配搜索；</p>
-</li>
-<li>
-<p>若 <code>type</code> 为 <code>fuzzy</code>，则进行模糊搜索（字符意义上的模糊）；</p>
-</li>
-<li>
-<p>若 <code>type</code> 为 <code>related</code>，则进行关联搜索（语义关联）；</p>
-</li>
-<li>
-<p>若 <code>type</code> 为 <code>regex</code>，则通过正则表达式搜索。</p>
-<ul>
-<li>
-<p>用户输入的正则表达式语法采用 <code>python</code> 正则表达式语法，并且需要转义。例如，要搜索以 <code>.com</code> 结尾的内容，需要输入 <code>\.com$</code>；要搜索包含 <code>apple.</code> 的内容，需要输入 <code>apple\.</code>。</p>
-</li>
-<li>
-<p>特别地，如果使用空串，表示搜索任意内容。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>搜索排序逻辑为相关性优先。</p>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>获取搜索结果成功</p>
-<p>获取搜索结果成功，返回如下响应：</p>
-<blockquote>
-<p><code>200 OK</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;page_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;page_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">117</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pretty.gif&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pretty Gif&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.2</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;uploader&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;uploader_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;beauty&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;beauty&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fun&quot;</span><span class="p">],</span>
-<span class="w">                </span><span class="nt">&quot;like&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">412</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;pub_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-25T17:13:55.648217Z&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>页码不为正整数</p>
-<blockquote>
-<p><code>400 Bad Request</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INVALID_PAGES&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<h3 id="post-searchsuggest">POST /search/suggest<a class="headerlink" href="#post-searchsuggest" title="Permanent link">&para;</a></h3>
-<p>获取搜索建议。</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="48:4"><input checked="checked" id="__tabbed_48_1" name="__tabbed_48" type="radio" /><input id="__tabbed_48_2" name="__tabbed_48" type="radio" /><input id="__tabbed_48_3" name="__tabbed_48" type="radio" /><input id="__tabbed_48_4" name="__tabbed_48" type="radio" /><div class="tabbed-labels"><label for="__tabbed_48_1">请求</label><label for="__tabbed_48_2">行为</label><label for="__tabbed_48_3">响应</label><label for="__tabbed_48_4">错误</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>请求正文样例：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;title&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;correct&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>正文的 JSON 包含一个字典，字典的各字段含义如下：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>必选</th>
-<th>默认值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>query</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code></code></td>
-<td>当前搜索框已输入内容</td>
-</tr>
-<tr>
-<td><code>target</code></td>
-<td>字符串</td>
-<td>否</td>
-<td><code>title</code></td>
-<td>当前搜索对象</td>
-</tr>
-<tr>
-<td><code>correct</code></td>
-<td>布尔值</td>
-<td>否</td>
-<td><code>true</code></td>
-<td>是否纠错</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="tabbed-block">
-<p>后端接收到请求后，向搜索后端发送请求，并返回一个补全建议和纠错建议列表。</p>
-<ul>
-<li>
-<p>如果 <code>body["target"] == "title"</code>：</p>
-<ul>
-<li>
-<p>先获取补全建议。</p>
-</li>
-<li>
-<p>如果补全建议结果较少且需要纠错，那么再获取纠错建议。</p>
-</li>
-<li>
-<p>返回结果中，补全建议在前，纠错建议在后。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>如果 <code>body["target"] == "uploader"</code>：</p>
-<ul>
-<li>直接获取纠错建议。</li>
-</ul>
-</li>
-<li>
-<p>如果 <code>body["target"</code>]` 不存在，或存在但其他值：</p>
-<ul>
-<li>等效于 <code>body["target"] == "title"</code> 的情况。</li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>获取搜索建议成功</p>
-<p>获取搜索建议成功，返回如下响应：</p>
-<blockquote>
-<p><code>200 OK</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;suggestions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;Hello world again!&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;Hello world again and again!&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="s2">&quot;Hello world again, again and again!&quot;</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>此 API 不应返回错误。</p>
-</div>
-</div>
-</div>
-<h3 id="post-searchhotwords">POST /search/hotwords<a class="headerlink" href="#post-searchhotwords" title="Permanent link">&para;</a></h3>
-<p>获取搜索热词。</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="49:4"><input checked="checked" id="__tabbed_49_1" name="__tabbed_49" type="radio" /><input id="__tabbed_49_2" name="__tabbed_49" type="radio" /><input id="__tabbed_49_3" name="__tabbed_49" type="radio" /><input id="__tabbed_49_4" name="__tabbed_49" type="radio" /><div class="tabbed-labels"><label for="__tabbed_49_1">请求</label><label for="__tabbed_49_2">行为</label><label for="__tabbed_49_3">响应</label><label for="__tabbed_49_4">错误</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>无需附带请求正文。</p>
-</div>
-<div class="tabbed-block">
-<p>后端接收到请求后，向搜索后端发送请求，并返回高频搜索词列表。</p>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>获取搜索热词成功</p>
-<p>获取搜索热词成功，返回如下响应：</p>
-<blockquote>
-<p><code>200 OK</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;spider&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dog&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;large&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;still&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;word&quot;</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<p>此 API 不应返回错误。</p>
-</div>
-</div>
-</div>
-<h3 id="get-createlinkgif_id">GET /createlink/[gif_id]<a class="headerlink" href="#get-createlinkgif_id" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code>生成 Gif 预览和下载的分享链接，有效期为 1 天。
-</code></pre></div>
-
-<div class="tabbed-set tabbed-alternate" data-tabs="50:4"><input checked="checked" id="__tabbed_50_1" name="__tabbed_50" type="radio" /><input id="__tabbed_50_2" name="__tabbed_50" type="radio" /><input id="__tabbed_50_3" name="__tabbed_50" type="radio" /><input id="__tabbed_50_4" name="__tabbed_50" type="radio" /><div class="tabbed-labels"><label for="__tabbed_50_1">请求</label><label for="__tabbed_50_2">行为</label><label for="__tabbed_50_3">响应</label><label for="__tabbed_50_4">错误</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>无需附带请求正文。</p>
-</div>
-<div class="tabbed-block">
-<p>返回 Gif 的分享链接。</p>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>生成分享链接成功</p>
-<p>生成分享链接成功，返回如下响应：</p>
-<blockquote>
-<p><code>200 OK</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;preview_link&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://gifexplorer-backend-nullptr.app.secoder.net/image/preview/klzh7dUapmke&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;download_link&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://gifexplorer-backend-nullptr.app.secoder.net/image/download/klzh7dUapmke&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>Gif 不存在</p>
-<blockquote>
-<p><code>400 Bad Request</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GIFS_NOT_FOUND&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<h3 id="post-imagecreateziplink">POST /image/createziplink<a class="headerlink" href="#post-imagecreateziplink" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><code>生成 Gif 批量下载的分享链接，有效期为 1 天。
-</code></pre></div>
-
-<div class="tabbed-set tabbed-alternate" data-tabs="51:4"><input checked="checked" id="__tabbed_51_1" name="__tabbed_51" type="radio" /><input id="__tabbed_51_2" name="__tabbed_51" type="radio" /><input id="__tabbed_51_3" name="__tabbed_51" type="radio" /><input id="__tabbed_51_4" name="__tabbed_51" type="radio" /><div class="tabbed-labels"><label for="__tabbed_51_1">请求</label><label for="__tabbed_51_2">行为</label><label for="__tabbed_51_3">响应</label><label for="__tabbed_51_4">错误</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>请求正文样例：</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;gif_ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<p>返回 Gif 的批量下载链接。</p>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>生成分享链接成功</p>
-<p>生成分享链接成功，返回如下响应：</p>
-<blockquote>
-<p><code>200 OK</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;downloadzip_link&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://gifexplorer-backend-nullptr.app.secoder.net/image/downloadzip?token=klzh7dUapmke&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</li>
-</ul>
-</div>
-<div class="tabbed-block">
-<ul>
-<li>
-<p>Gif 不存在</p>
-<blockquote>
-<p><code>400 Bad Request</code></p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GIFS_NOT_FOUND&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
 <span class="p">}</span>
 </code></pre></div>
