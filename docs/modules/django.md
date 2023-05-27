@@ -1,18 +1,23 @@
 # 后端
 
-## 架构设计
-
-![后端整体设计](../images/后端.png)
-
 ## 设计原则
 
-1. 缓存加速：数据库中的数据量与访问速度负相关。由于`新闻数据库`数据量大（千万量级），因此需要加入缓存系统。为保证缓存命中率，将近期更新的新闻、近期与用户交互（搜索、收藏、阅读等）的新闻加入缓存。
-2. 业务分离：后端与AI摘要分别是IO密集型与计算密集型任务。因此为二者建立独立服务，避免两者争抢运算资源。
+1. 数据模型设计：合理设计数据模型，巧妙使用外键关联，支持快速的搜索和过滤操作。
 
+2. 高效的搜索后端：选择 Elastic Search 作为搜索后端，支持快速的搜索操作、精确的分词操作及自适应的相关度排序。
+
+3. 缓存加速：使用缓存来提高搜索性能。数据库中的数据量与访问速度负相关，可以使用后端内存缓存。为保证缓存命中率，将最近访问的数据存储在内存中，减少索引数据库查询的次数。
+
+4. 异步处理：对于耗时的图片扩展服务，使用 Celery 异步处理方式，将非阻塞请求放入消息队列中进行处理，从而提高系统的吞吐量和响应时间。
+
+5. 灵活性和权限控制：确保搜索、分享功能的灵活性，允许授权用户与未授权用户进行功能使用。
+
+6. 测试和性能优化：进行全面的测试，包括功能测试和性能测试，以确保后端功能的正确性和高效性。根据测试结果优化 api 响应时间。
 
 ## 功能设计
 
 ### 新闻缓存
+
 1. 定时从新闻数据库获取最新新闻并缓存至内存
 2. 缓存搜索内容至内存
 3. 维护新闻首页展示内容
@@ -21,17 +26,20 @@
 6. 维护缓存大小
 
 ### 用户新闻管理器
+
 1. 记录与用户交互的新闻及交互信息
 2. 缓存加速
 3. 维护AI摘要内容
 
 ### `token`校验
+
 1. 用户登陆时生成`token`（`7`天时效）
 2. 用户退出登录时注销`token`
 3. 维护`token`白名单
 4. 校验请求中`token`是否有效
 
 ### 用户管理
+
 1. 创建用户
 2. 用户登录（登出）
 3. 更新（获取）用户标签
@@ -39,60 +47,57 @@
 5. 修改（获取）用户头像
 
 ### 视图模块
+
 1. 根据数据库中信息，响应前端请求
 2. 根据前端请求，更新数据库
 
 ## 实现
 
 ### 项目结构
-```
+
+```shell
 │  .pycodestyle  # pycodestyle配置文件
 │  .pylintrc  # pylint配置文件
 │  pytest.ini  # pytest配置文件
-│  db.sqlite3  # 默认数据库（未使用）
 │  manage.py  # Django项目管理
+│  start.sh  # 运行脚本
+│  sonar-project.properties  # sonarqube配置文件
+│  requirements.txt  # 依赖列表  
 │
-├─asyNc  # 默认项目文件夹
+├─GifExplorer  # 默认项目文件夹
 │      asgi.py
 │      settings.py  # 项目设置
 │      urls.py  # 项目主路由
+│      celery.py  # celery配置
 │      wsgi.py
 │      __init__.py
 │
-├─certificate  # 数据库证书
-│      ca-bundle.pem
-│      ca.pem
+├─files  # 文件存储
+│      gifs  # gif文件
+│      tests  # 测试文件
 │
 ├─config  # 后端配置文件
 │      config.json  # 后端数据库配置
-│      es.json  # es搜索配置
-│      lucene.json  # lucene搜索配置
 │
-├─data  # 数据文件
-│      default_avatar.base64  # 默认头像
-│      news_cache.pkl  # 新闻缓存（本地存储部分）
-│      news_template.pkl  # 新闻模板
+├─utils  # 工具函数
+│      utils_request.py  # 返回请求
+│      utils_require.py  # 检查请求格式
+│      utils_time.py  # 时间戳工具
 │
 └─main  # 后端主应用
     │  admin.py
     │  apps.py  # apps设置
     │  config.py  # 参数设置
     │  models.py  # 数据模型
-    │  responses.py  # responses模板
+    │  search.py  # 搜索模块
     │  tests.py  # 单元测试
-    │  tools.py  # 工具
+    │  helpers.py  # 工具
     │  urls.py  # 应用路由
     │  views.py  # 视图
     │  __init__.py
     │
-    ├─managers
-    │      DBScanner.py  # 新闻缓存定时更新器
-    │      NewsCache.py  # 新闻缓存管理器
-    │      LocalNewsManager.py  # 用户新闻管理器
-    │
     └─migrations  # 数据库模型迁移
 ```
-
 
 ### 新闻获取函数： `get_data_from_db`
 实现函数：`main.tools.get_data_from_db(news_id)`
