@@ -87,7 +87,9 @@ nav:
     - 需求实现: implement.md
   - 模块设计:
     - 数据库设计: modules/database.md
-    - 接口设计: modules/api.md
+    - 接口设计: 
+      - 通用接口: modules/api.md
+      - 搜索接口: modules/search-api.md
     - 各模块主要设计:
       - 爬虫: modules/spider.md
       - 检索: modules/search.md
