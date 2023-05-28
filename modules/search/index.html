@@ -715,20 +715,27 @@
         
           <li class="md-nav__item">
   <a href="#_14" class="md-nav__link">
-    搜索缓存
+    搜索结果显示
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_15" class="md-nav__link">
-    用户搜索历史
+    搜索缓存
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_16" class="md-nav__link">
+    用户搜索历史
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
     智能推荐
   </a>
   
@@ -736,28 +743,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
+  <a href="#_18" class="md-nav__link">
     用户输入预测
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
+  <a href="#_19" class="md-nav__link">
     用户输入纠错
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
+  <a href="#_20" class="md-nav__link">
     搜索高频词
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
+  <a href="#_21" class="md-nav__link">
     用户画像
   </a>
   
@@ -948,20 +955,27 @@
         
           <li class="md-nav__item">
   <a href="#_14" class="md-nav__link">
-    搜索缓存
+    搜索结果显示
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_15" class="md-nav__link">
-    用户搜索历史
+    搜索缓存
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#_16" class="md-nav__link">
+    用户搜索历史
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
     智能推荐
   </a>
   
@@ -969,28 +983,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
+  <a href="#_18" class="md-nav__link">
     用户输入预测
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_18" class="md-nav__link">
+  <a href="#_19" class="md-nav__link">
     用户输入纠错
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_19" class="md-nav__link">
+  <a href="#_20" class="md-nav__link">
     搜索高频词
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_20" class="md-nav__link">
+  <a href="#_21" class="md-nav__link">
     用户画像
   </a>
   
@@ -1063,7 +1077,8 @@
 </ul>
 <h4 id="_7">正则表达式搜索<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
 <ul>
-<li>在 Django 后端中直接对数据库进行正则表达式匹配检索，并进行过滤条件的筛选。最后返回相应页面的图片信息</li>
+<li>可以针对 <code>title/uploader</code> 进行搜索。用户输入一个正则表达式，在 Django 后端直接使用数据库的正则表达式查询来实现，不经过 ElasticSearch 搜索模块。</li>
+<li>正则表达式采用 <a href="https://docs.python.org/3/library/re.html">python 正则表达式语法</a>。</li>
 </ul>
 <h4 id="_8">关联搜索<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
 <ul>
@@ -1109,10 +1124,16 @@
 <p>严格判等的查询如完全匹配，只要匹配上结果就同分；含有匹配、分词的查询，根据匹配程度评分；尺寸时长的筛选不参与评分</p>
 </li>
 <li>
-<p>根据时间热度等其他排序方式，在热搜词等功能有一定程度涉及，因此不单独实现，默认针对关联性排序</p>
+<p>对于正则表达式查询，认为不同的条目只有匹配与不匹配该正则表达式之分，对于匹配的项目没有匹配度/关联度高低之分。因而正则表达式对搜索结果不进行“关联度”排序，返回的结果将按图片在数据库中的 <code>id</code> 排序。</p>
 </li>
+<li>根据时间热度等其他排序方式，在热搜词等功能有一定程度涉及，因此不单独实现，默认针对关联性排序</li>
 </ul>
-<h3 id="_14">搜索缓存<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h3 id="_14">搜索结果显示<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<ul>
+<li>分页显示：在完成以上搜索之后，将排序后的结果分页，只返回指定的页面的结果。</li>
+<li>搜索计时：搜索接口还返回搜索部分的用时和整个搜索 API 的用时。</li>
+</ul>
+<h3 id="_15">搜索缓存<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>将最近搜索的结果缓存在 Django 后端，避免对连续重复请求进行重复搜索，提高搜索效率</p>
@@ -1121,13 +1142,13 @@
 <p>Django 后端维护一个搜索缓存映射表，每一项的键是搜索请求体，值是该搜索的时间戳和对应的结果列表。对于每次搜索请求，先检查该请求中是否在缓存表中出现，且时间戳未过期，并直接返回结果；否则进行搜索并在缓存表中添加或更新搜索记录</p>
 </li>
 </ul>
-<h3 id="_15">用户搜索历史<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<h3 id="_16">用户搜索历史<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
 <ul>
 <li>网页前端使用本地存储记录用户搜索历史，每次搜索时将用户输入存入本地，下次打开网页时读取本地存储，将用户搜索历史显示在搜索框下方，用户可以点击历史记录进行搜索</li>
 </ul>
 <hr />
-<h3 id="_16">智能推荐<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
-<h4 id="_17">用户输入预测<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<h3 id="_17">智能推荐<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<h4 id="_18">用户输入预测<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
 <p>根据用户已有的输入，预测用户的搜索目标，每当用户输入变化都需要使用该功能，因此需要较高性能，预测时总是先假设用户当前输入无误，因此给出的建议前缀与用户输入相同</p>
@@ -1137,7 +1158,7 @@
 <p>支持对 <code>title</code> 进行预测，由于用户数目较少，能给出了建议有限，因此在 <code>uploader</code> 的查询时取消了预测，只给出纠错，有利于提高性能</p>
 </li>
 </ul>
-<h4 id="_18">用户输入纠错<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<h4 id="_19">用户输入纠错<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
 <p>如果用户输入了错误的前缀，很有可能无法根据图库信息给出建议，此时认为用户输入有误，给出纠错，即优先级 用户输入预测 &gt; 用户输入纠错</p>
@@ -1145,22 +1166,16 @@
 </li>
 <li>
 <p>支持对 <code>title/uploader</code> 进行纠错</p>
-<ul>
-<li>
-<p><strong>语法纠错</strong>，简单的拼写校正</p>
 </li>
-<li>
-<p><strong>内容纠错</strong>，能根据数据库已有图片的信息，给出内容上的纠错，图库越大纠错效果越明显</p>
-</li>
+<li><strong>语法纠错</strong>，简单的拼写校正</li>
+<li><strong>内容纠错</strong>，能根据数据库已有图片的信息，给出内容上的纠错，图库越大纠错效果越明显</li>
 </ul>
-</li>
-</ul>
-<h4 id="_19">搜索高频词<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<h4 id="_20">搜索高频词<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
 <ul>
 <li>基于网站搜索历史给出搜索高频词（句），不同于用户搜索历史 <strong>基于个人的历史</strong>，搜索高频词根据 <strong>所有用户的输入</strong> 给出，实现上在 ElasticSearch 数据库中新建了 <code>message</code> 条目, 通过 ElasticSearch <code>aggs</code> 聚合查询，统计每个输入的出现次数，给出高频结果</li>
 <li>用户输入被作为一个整体，不进行分词，正如微博热搜给出的是热搜句，而非热搜字，具有完整信息的高频次推荐更有意义</li>
 </ul>
-<h4 id="_20">用户画像<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<h4 id="_21">用户画像<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
 <p>基于用户的搜索偏好，个性化推荐用户可能想看的 Gif ，在网站首页进行展示</p>
