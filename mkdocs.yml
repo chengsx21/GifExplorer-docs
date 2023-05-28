@@ -56,8 +56,8 @@ extra:
 markdown_extensions:
   - admonition
   - codehilite:
-      guess_lang: false
-      linenums: false
+      guess_lang: true
+      linenums: true
   - toc:
       permalink: true
   - footnotes
@@ -85,6 +85,7 @@ nav:
   - 需求及分析: 
     - 需求分析: structure.md
     - 需求实现: implement.md
+    - 检索召回率分析: recall.md
   - 模块设计:
     - 数据库设计: modules/database.md
     - 接口设计: 
