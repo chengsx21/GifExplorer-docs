@@ -35,7 +35,7 @@
     |`filter`|数组|否|`[]`|Gif 尺寸、时长|
     |`category`|字符串|否|` `|Gif 类别|
     |`tags`|数组|否|`[]`|Gif 标签|
-    |`type`|字符串|否|`partial`|搜索模式|
+    |`type`|字符串|否|`perfect`|搜索模式|
     |`page`|整数|否|1|页码|
 
     - `target` 和 `keyword` 必须都非空串，或者都为空串才合法。
