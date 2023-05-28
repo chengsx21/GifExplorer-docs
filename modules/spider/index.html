@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gif" class="md-skip">
+        <a href="#_1" class="md-skip">
           跳转至
         </a>
       
@@ -335,6 +335,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -371,6 +373,20 @@
     <li class="md-nav__item">
       <a href="../../implement/" class="md-nav__link">
         需求实现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recall/" class="md-nav__link">
+        检索召回率分析
       </a>
     </li>
   
@@ -587,21 +603,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     技术选型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     功能设计
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     实现
   </a>
   
@@ -637,7 +653,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     部署
   </a>
   
@@ -739,21 +755,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     技术选型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     功能设计
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     实现
   </a>
   
@@ -789,7 +805,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     部署
   </a>
   
@@ -818,12 +834,12 @@
   
 
 
-<h1 id="gif">GIF 爬虫<a class="headerlink" href="#gif" title="Permanent link">&para;</a></h1>
-<h2 id="_1">技术选型<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h1 id="_1">爬虫<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">技术选型<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Scrapy 框架 <code>version==2.8.0</code> ，是一款成熟的爬虫框架</li>
 </ul>
-<h2 id="_2">功能设计<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_3">功能设计<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
 <p><strong>多来源大规模</strong>，支持从以下多个高质量图源分类获取 gif，能够爬取 1w 以上的页面，构建 10w 量级的图库，在保证图库的规模的同时精选图片，切合用户审美</p>
@@ -864,10 +880,10 @@
 <p><strong>自动化</strong>，在 <code>gitlab</code> 上持续集成，通过 <code>scrapyd</code> 在本地部署，提供脚本实现爬虫的定时启动，以对数据库进行更新，同时由于本地 <code>http cache</code> 的存在，重复页面爬取速度非常快，定时重启不会带来过大压力</p>
 </li>
 </ul>
-<h2 id="_3">实现<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="_4">实现<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <h3 id="pipeline"><code>pipeline</code><a class="headerlink" href="#pipeline" title="Permanent link">&para;</a></h3>
 <ul>
-<li>实现图片下载功能，根据获取的图片元信息，从源网页获取 gif 的二进制数据，在本地下载缓存，然后与元信息组装后，通过后端接口上传（在后端的实现中会同时上传至 <code>postgre</code> 和 <code>elasticsearch</code> 数据库），如果爬取的网页中元信息不完整，此时还会进行自动标注</li>
+<li>实现图片下载功能，根据获取的图片元信息，从源网页获取 Gif 的二进制数据，在本地下载缓存，然后与元信息组装后，通过后端接口上传（在后端的实现中会同时上传至 Postgres 和 ElasticSearch 数据库），如果爬取的网页中元信息不完整，此时还会进行自动标注</li>
 <li>本地部署的爬虫连接本地后端，不会将图传至 <code>secoder</code></li>
 </ul>
 <h3 id="item"><code>item</code><a class="headerlink" href="#item" title="Permanent link">&para;</a></h3>
@@ -879,7 +895,7 @@
 <li>
 <p><code>giphy_spider</code></p>
 <p>通过抓包分析发现，可以在 <code>https://api.giphy.com/v1/gifs/search</code> 下携带参数<code>api_key=Gc7131jiJuvI7IdN0HZ1D7nh0ow5BU6g</code></p>
-<p>进行搜索，通过 <code>q</code> 搜索参数和 <code>offset</code> 翻页参数可以获取某一类别下的全部 gif</p>
+<p>进行搜索，通过 <code>q</code> 搜索参数和 <code>offset</code> 翻页参数可以获取某一类别下的全部 Gif</p>
 <p>可以在 <code>gifexplorer-crawler/gifSpider</code> 目录下执行 <code>scrapy giphy</code> 启动</p>
 </li>
 <li>
@@ -889,23 +905,23 @@
 </li>
 <li>
 <p><code>duitang_spider</code></p>
-<p>这是一个高质量图库，内含丰富的精美 gif ，但数量相对较少，因此直接将 <code>url</code> 和分类 <code>category</code> 进行对应，分类爬取全部图片，根据抓包发现将 <code>url</code> 中的 <code>dtstatic</code> 替换为 <code>duitang</code> 即能访问到真正的图片，完成爬取。</p>
+<p>这是一个高质量图库，内含丰富的精美 Gif ，但数量相对较少，因此直接将 <code>url</code> 和分类 <code>category</code> 进行对应，分类爬取全部图片，根据抓包发现将 <code>url</code> 中的 <code>dtstatic</code> 替换为 <code>duitang</code> 即能访问到真正的图片，完成爬取。</p>
 <p>可以在 <code>gifexplorer-crawler/gifSpider</code> 目录下执行 <code>scrapy duitang</code> 启动</p>
 </li>
 <li>
 <p><code>yh31_spider</code></p>
-<p>用于扩充图片来源，选择了一个较小的中文 gif 网站进行爬取，体量虽不如 giphy 和 vsgif 等知名网站，也能提供一些中文语境下的优秀梗图，爬取上比较简单，获取 <code>response</code> 后从中提取出下一页的 <code>url</code>，递归地爬取即可</p>
+<p>用于扩充图片来源，选择了一个较小的中文 Gif 网站进行爬取，体量虽不如 giphy 和 vsgif 等知名网站，也能提供一些中文语境下的优秀梗图，爬取上比较简单，获取 <code>response</code> 后从中提取出下一页的 <code>url</code>，递归地爬取即可</p>
 <p>可以在 <code>gifexplorer-crawler/gifSpider</code> 目录下执行 <code>scrapy yh31</code> 启动</p>
 </li>
 <li>
 <p><code>animatedimage_spider</code></p>
-<p>提供动画式的动图，相比前几个来源这些 gif 更轻量，爬取时根据首页推荐分类，跳转到各页进行爬取，再添加翻页参数翻页即可</p>
+<p>提供动画式的动图，相比前几个来源这些 Gif 更轻量，爬取时根据首页推荐分类，跳转到各页进行爬取，再添加翻页参数翻页即可</p>
 <p>可以在 <code>gifexplorer-crawler/gifSpider</code> 目录下执行 <code>scrapy animatedimage</code> 启动</p>
 </li>
 </ul>
 <h3 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h3>
 <p><img alt="CI" src="../../images/CI.png" /></p>
-<h3 id="_4">部署<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_5">部署<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>通过 <code>scrapyd</code> 对爬虫任务进行管理，需要在本地开启 <code>scrapyd</code> 服务，随后启动定时脚本即可发布爬虫任务，并在规定时间（一周后）取消</p>

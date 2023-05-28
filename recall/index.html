@@ -12,25 +12,27 @@
         <meta name="author" content="陈鑫圣 程思翔 李羽飞 刘竞暄 卢天彧">
       
       
-        <link rel="canonical" href="https://chengsx21.github.io/GifExplorer-docs/modules/django/">
+        <link rel="canonical" href="https://chengsx21.github.io/GifExplorer-docs/recall/">
       
       
-        <link rel="prev" href="../frontend/">
+        <link rel="prev" href="../implement/">
       
       
-      <link rel="icon" href="../../images/logo.svg">
+        <link rel="next" href="../modules/database/">
+      
+      <link rel="icon" href="../images/logo.svg">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
-        <title>后端 - GifExplorer - 图片检索系统</title>
+        <title>检索召回率分析 - GifExplorer - 图片检索系统</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -46,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -75,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#gifexplorer" class="md-skip">
           跳转至
         </a>
       
@@ -89,9 +91,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../.." title="GifExplorer - 图片检索系统" class="md-header__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
+    <a href=".." title="GifExplorer - 图片检索系统" class="md-header__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
       
-  <img src="../../images/logo.svg" alt="logo">
+  <img src="../images/logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -107,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              后端
+              检索召回率分析
             
           </span>
         </div>
@@ -214,26 +216,10 @@
 
 
   <li class="md-tabs__item">
-    <a href="../.." class="md-tabs__link">
+    <a href=".." class="md-tabs__link">
       概述
     </a>
   </li>
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../structure/" class="md-tabs__link">
-        需求及分析
-      </a>
-    </li>
-  
 
       
         
@@ -247,7 +233,23 @@
   
   
     <li class="md-tabs__item">
-      <a href="../database/" class="md-tabs__link md-tabs__link--active">
+      <a href="../structure/" class="md-tabs__link md-tabs__link--active">
+        需求及分析
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../modules/database/" class="md-tabs__link">
         模块设计
       </a>
     </li>
@@ -275,9 +277,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="GifExplorer - 图片检索系统" class="md-nav__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
+    <a href=".." title="GifExplorer - 图片检索系统" class="md-nav__button md-logo" aria-label="GifExplorer - 图片检索系统" data-md-component="logo">
       
-  <img src="../../images/logo.svg" alt="logo">
+  <img src="../images/logo.svg" alt="logo">
 
     </a>
     GifExplorer - 图片检索系统
@@ -305,94 +307,9 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         概述
       </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-      
-      
-        
-          
-        
-          
-        
-          
-        
-      
-      
-        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-          需求及分析
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_2">
-          <span class="md-nav__icon md-icon"></span>
-          需求及分析
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../structure/" class="md-nav__link">
-        需求分析
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../implement/" class="md-nav__link">
-        需求实现
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../recall/" class="md-nav__link">
-        检索召回率分析
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -412,7 +329,248 @@
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          需求及分析
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          需求及分析
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/" class="md-nav__link">
+        需求分析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implement/" class="md-nav__link">
+        需求实现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          检索召回率分析
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        检索召回率分析
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    召回率
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#perfect" class="md-nav__link">
+    Perfect
+  </a>
+  
+    <nav class="md-nav" aria-label="Perfect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial" class="md-nav__link">
+    Partial
+  </a>
+  
+    <nav class="md-nav" aria-label="Partial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regex" class="md-nav__link">
+    Regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    Related
+  </a>
+  
+    <nav class="md-nav" aria-label="Related">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    Filter
+  </a>
+  
+    <nav class="md-nav" aria-label="Filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
       
       
         
@@ -429,7 +587,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           模块设计
@@ -442,7 +600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../database/" class="md-nav__link">
+      <a href="../modules/database/" class="md-nav__link">
         数据库设计
       </a>
     </li>
@@ -491,7 +649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
+      <a href="../modules/api/" class="md-nav__link">
         通用接口
       </a>
     </li>
@@ -505,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../search-api/" class="md-nav__link">
+      <a href="../modules/search-api/" class="md-nav__link">
         搜索接口
       </a>
     </li>
@@ -524,18 +682,16 @@
               
   
   
-    
-  
   
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
       
       
         
@@ -554,7 +710,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_3_3">
           <span class="md-nav__icon md-icon"></span>
           各模块主要设计
@@ -567,7 +723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spider/" class="md-nav__link">
+      <a href="../modules/spider/" class="md-nav__link">
         爬虫
       </a>
     </li>
@@ -581,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../search/" class="md-nav__link">
+      <a href="../modules/search/" class="md-nav__link">
         检索
       </a>
     </li>
@@ -595,7 +751,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../frontend/" class="md-nav__link">
+      <a href="../modules/frontend/" class="md-nav__link">
         前端
       </a>
     </li>
@@ -607,127 +763,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          后端
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../modules/django/" class="md-nav__link">
         后端
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    设计原则
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    功能实现
-  </a>
-  
-    <nav class="md-nav" aria-label="功能实现">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    项目结构
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#views" class="md-nav__link">
-    views 模块
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token" class="md-nav__link">
-    token 校验
-  </a>
-  
-    <nav class="md-nav" aria-label="token 校验">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#token_1" class="md-nav__link">
-    创建token
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_2" class="md-nav__link">
-    解码token
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_3" class="md-nav__link">
-    将token加入白名单
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_4" class="md-nav__link">
-    检验token有效
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_5" class="md-nav__link">
-    将token移除
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -773,79 +813,119 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    设计原则
+  <a href="#_1" class="md-nav__link">
+    召回率
   </a>
   
 </li>
       
         <li class="md-nav__item">
+  <a href="#perfect" class="md-nav__link">
+    Perfect
+  </a>
+  
+    <nav class="md-nav" aria-label="Perfect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
-    功能实现
-  </a>
-  
-    <nav class="md-nav" aria-label="功能实现">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    项目结构
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#views" class="md-nav__link">
-    views 模块
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token" class="md-nav__link">
-    token 校验
-  </a>
-  
-    <nav class="md-nav" aria-label="token 校验">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#token_1" class="md-nav__link">
-    创建token
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_2" class="md-nav__link">
-    解码token
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_3" class="md-nav__link">
-    将token加入白名单
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_4" class="md-nav__link">
-    检验token有效
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#token_5" class="md-nav__link">
-    将token移除
+    测试结果
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial" class="md-nav__link">
+    Partial
+  </a>
+  
+    <nav class="md-nav" aria-label="Partial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regex" class="md-nav__link">
+    Regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    Related
+  </a>
+  
+    <nav class="md-nav" aria-label="Related">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    测试结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    Filter
+  </a>
+  
+    <nav class="md-nav" aria-label="Filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    测试方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    测试结果
+  </a>
   
 </li>
         
@@ -872,94 +952,184 @@
   
 
 
-<h1 id="_1">后端<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">设计原则<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<ol>
-<li>
-<p>数据模型设计：合理设计数据模型，巧妙使用外键关联，支持快速的搜索和过滤操作。</p>
-</li>
-<li>
-<p>高效的搜索后端：选择 ElasticSearch 作为搜索后端，支持快速的搜索操作、精确的分词操作及自适应的相关度排序。</p>
-</li>
-<li>
-<p>缓存加速：使用缓存来提高搜索性能。数据库中的数据量与访问速度负相关，可以使用后端内存缓存。为保证缓存命中率，将最近访问的数据存储在内存中，减少索引数据库查询的次数。</p>
-</li>
-<li>
-<p>异步处理：对于耗时的图片扩展服务，使用 Celery 异步处理方式，将非阻塞请求放入消息队列中进行处理，从而提高系统的吞吐量和响应时间。</p>
-</li>
-<li>
-<p>灵活性和权限控制：确保搜索、分享功能的灵活性，允许授权用户与未授权用户进行功能使用。</p>
-</li>
-<li>
-<p>测试和性能优化：进行全面的测试，包括功能测试和性能测试，以确保后端功能的正确性和高效性。根据测试结果优化 api 响应时间。</p>
-</li>
-</ol>
-<h2 id="_3">功能实现<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h3 id="_4">项目结构<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>│<span class="w">  </span>.pycodestyle<span class="w">  </span><span class="c1"># pycodestyle配置文件</span>
-│<span class="w">  </span>.pylintrc<span class="w">  </span><span class="c1"># pylint配置文件</span>
-│<span class="w">  </span>pytest.ini<span class="w">  </span><span class="c1"># pytest配置文件</span>
-│<span class="w">  </span>manage.py<span class="w">  </span><span class="c1"># Django项目管理</span>
-│<span class="w">  </span>start.sh<span class="w">  </span><span class="c1"># 运行脚本</span>
-│<span class="w">  </span>sonar-project.properties<span class="w">  </span><span class="c1"># sonarqube配置文件</span>
-│<span class="w">  </span>requirements.txt<span class="w">  </span><span class="c1"># 依赖列表  </span>
-│
-├─GifExplorer<span class="w">  </span><span class="c1"># 默认项目文件夹</span>
-│<span class="w">      </span>asgi.py
-│<span class="w">      </span>settings.py<span class="w">  </span><span class="c1"># 项目设置</span>
-│<span class="w">      </span>urls.py<span class="w">  </span><span class="c1"># 项目主路由</span>
-│<span class="w">      </span>celery.py<span class="w">  </span><span class="c1"># celery配置</span>
-│<span class="w">      </span>wsgi.py
-│<span class="w">      </span>__init__.py
-│
-├─files<span class="w">  </span><span class="c1"># 文件存储</span>
-│<span class="w">      </span>gifs<span class="w">  </span><span class="c1"># gif文件</span>
-│<span class="w">      </span>tests<span class="w">  </span><span class="c1"># 测试文件</span>
-│
-├─config<span class="w">  </span><span class="c1"># 后端配置文件</span>
-│<span class="w">      </span>config.json<span class="w">  </span><span class="c1"># 后端数据库配置</span>
-│
-├─utils<span class="w">  </span><span class="c1"># 工具函数</span>
-│<span class="w">      </span>utils_request.py<span class="w">  </span><span class="c1"># 返回请求</span>
-│<span class="w">      </span>utils_require.py<span class="w">  </span><span class="c1"># 检查请求格式</span>
-│<span class="w">      </span>utils_time.py<span class="w">  </span><span class="c1"># 时间戳工具</span>
-│
-└─main<span class="w">  </span><span class="c1"># 后端主应用</span>
-<span class="w">    </span>│<span class="w">  </span>admin.py
-<span class="w">    </span>│<span class="w">  </span>apps.py<span class="w">  </span><span class="c1"># apps设置</span>
-<span class="w">    </span>│<span class="w">  </span>config.py<span class="w">  </span><span class="c1"># 参数设置</span>
-<span class="w">    </span>│<span class="w">  </span>models.py<span class="w">  </span><span class="c1"># 数据模型</span>
-<span class="w">    </span>│<span class="w">  </span>search.py<span class="w">  </span><span class="c1"># 搜索模块</span>
-<span class="w">    </span>│<span class="w">  </span>tests.py<span class="w">  </span><span class="c1"># 单元测试</span>
-<span class="w">    </span>│<span class="w">  </span>helpers.py<span class="w">  </span><span class="c1"># 工具</span>
-<span class="w">    </span>│<span class="w">  </span>urls.py<span class="w">  </span><span class="c1"># 应用路由</span>
-<span class="w">    </span>│<span class="w">  </span>views.py<span class="w">  </span><span class="c1"># 视图</span>
-<span class="w">    </span>│<span class="w">  </span>__init__.py
-<span class="w">    </span>│
-<span class="w">    </span>└─migrations<span class="w">  </span><span class="c1"># 数据库模型迁移</span>
-</code></pre></div>
-<h3 id="views"><code>views</code> 模块<a class="headerlink" href="#views" title="Permanent link">&para;</a></h3>
-<ol>
-<li>根据数据库中信息，响应前端请求</li>
-<li>根据前端请求，更新数据库</li>
-<li>内容详见 <code>模块设计-接口设计</code></li>
-</ol>
-<h3 id="token"><code>token</code> 校验<a class="headerlink" href="#token" title="Permanent link">&para;</a></h3>
-<h4 id="token_1">创建<code>token</code><a class="headerlink" href="#token_1" title="Permanent link">&para;</a></h4>
-<p>实现函数： <code>main.helpers.create_token(user_name, user_id)</code></p>
-<p>根据 <code>user_name</code>，<code>user_id</code>，创建<code>token</code>。</p>
-<h4 id="token_2">解码<code>token</code><a class="headerlink" href="#token_2" title="Permanent link">&para;</a></h4>
-<p>实现函数： <code>main.helpers.decode_token(token)</code></p>
-<p>根据 <code>encoded_token</code>，解码得到<code>user_name</code>，<code>user_id</code> 并返回。</p>
-<h4 id="token_3">将<code>token</code>加入白名单<a class="headerlink" href="#token_3" title="Permanent link">&para;</a></h4>
-<p>实现函数： <code>main.helpers.add_token_to_white_list(token)</code></p>
-<p>将 <code>token</code> 加入白名单。</p>
-<h4 id="token_4">检验<code>token</code>有效<a class="headerlink" href="#token_4" title="Permanent link">&para;</a></h4>
-<p>实现函数： <code>main.helpers.is_token_valid(token)</code></p>
-<p>先检查 <code>token</code> 是否有效。</p>
-<h4 id="token_5">将<code>token</code>移除<a class="headerlink" href="#token_5" title="Permanent link">&para;</a></h4>
-<p>实现函数： <code>main.helpers.delete_token_from_white_list(token)</code></p>
-<p>将 <code>token</code> 移除白名单。</p>
+<h1 id="gifexplorer">GifExplorer 搜索召回率测试报告<a class="headerlink" href="#gifexplorer" title="Permanent link">&para;</a></h1>
+<h2 id="_1">召回率<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>根据搜索的不同模式，分为 <code>perfect/partial/regex/related/filter</code> 五种模式进行测试，由于 <code>filter</code> 可以与前面四种不同模式组合使用，简洁起见将 <code>filter</code> 单独测试。</p>
+<p>为避免给 secoder 带来压力，我们基于 <code>elastic search</code> 内的索引数据库进行测试，召回率（即检出率）计算方式如下：根据 <code>id</code> 通过遍历 es 数据库获得所有 <strong>应被检出的目标</strong>（<code>total</code> 条），根据搜索 API 逻辑获得 <strong>搜索结果</strong>（<code>hit</code> 条），其中属于应被检出的目标有（<code>valid hit</code> 条），召回率定义为 <code>valid hit</code> 与 <code>total</code> 的比值。</p>
+<p>理想状态下，<strong>搜索召回率应该接近 "1"</strong>。</p>
+<h2 id="perfect"><code>Perfect</code><a class="headerlink" href="#perfect" title="Permanent link">&para;</a></h2>
+<h3 id="_2">测试方式<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>遍历数据库，如果 <code>title/uploader == keyword</code> 认为应该被检出，与搜索 API 逻辑相同，召回率测试结果理论上应为 "1" 。</p>
+<h3 id="_3">测试结果<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">title/uploader</th>
+<th align="center">total</th>
+<th align="center">hit</th>
+<th align="center">valid hit</th>
+<th align="center">recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>Trump</code></td>
+<td align="center">37</td>
+<td align="center">37</td>
+<td align="center">37</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>gif with tags: anime</code></td>
+<td align="center">188</td>
+<td align="center">188</td>
+<td align="center">188</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">uploader</td>
+<td align="center"><code>Chengsx21</code></td>
+<td align="center">17</td>
+<td align="center">17</td>
+<td align="center">17</td>
+<td align="center">1.00</td>
+</tr>
+</tbody>
+</table>
+<h2 id="partial"><code>Partial</code><a class="headerlink" href="#partial" title="Permanent link">&para;</a></h2>
+<h3 id="_4">测试方式<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>设搜索输入为 <code>keyword</code> ，根据 <code>whitespace/comma</code> 对结果分词，结果为 <code>tokens</code>，遍历数据库，如果 <code>title/uploader</code> 包含 <code>tokens</code> 中所有元素，则认为应该被检出。</p>
+<p>在本测试中，搜索模块给出的结果与测试脚本（遍历数据库的每一条目进行检查）完全相同，召回率为 100%。</p>
+<p>但是，由于测试脚本在分词时没有进行谓词的省略、也没有规定 <code>tokens</code> 元素的顺序关系，<strong>实际可能会检出一些不合逻辑的结果</strong>，而搜索 API 则进行了更准确的分词以及更合理的匹配，出于对比我们将前者作为检出条件，测试搜索的召回率，<strong>可能部分结果比 1 偏低</strong>。但本次测试时，数据库中大约有 7000-8000 张图，尚未扩展到数万张图的规模；当图片数据库规模更大、标题等信息更丰富时，可能出现上述情况。</p>
+<h3 id="_5">测试结果<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">keyword</th>
+<th align="center">total</th>
+<th align="center">hit</th>
+<th align="center">valid hit</th>
+<th align="center">recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>Trump</code></td>
+<td align="center">183</td>
+<td align="center">183</td>
+<td align="center">183</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>food, lunch</code></td>
+<td align="center">20</td>
+<td align="center">20</td>
+<td align="center">20</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">uploader</td>
+<td align="center"><code>Chengsx21</code></td>
+<td align="center">17</td>
+<td align="center">17</td>
+<td align="center">17</td>
+<td align="center">1.00</td>
+</tr>
+</tbody>
+</table>
+<h2 id="regex"><code>Regex</code><a class="headerlink" href="#regex" title="Permanent link">&para;</a></h2>
+<p>在本项目的实现中，正则表达式搜索在 Django 后端直接采用数据库中的正则表达式搜索，没有借助 ElasticSearch 搜索模块，因此本部分不再进行重复的测试。</p>
+<h2 id="related"><code>Related</code><a class="headerlink" href="#related" title="Permanent link">&para;</a></h2>
+<h3 id="_6">测试方式<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>设搜索输入为 <code>keyword</code> ，使用外部库进行词义关联，可以比较 <code>keyword</code> 和指定句子的关联度，设置关联度阈值，根据 id 遍历数据库，所有 <code>title/uploader</code> 与 <code>keyword</code> 关联度 <strong>超过阈值的目标被认为应当检出</strong>，搜索 API 使用另一套关联词表进行语义关联根据召回率测试结果对搜索的关联程度进行评估。</p>
+<p>因为“关联”没有明确的标准，所以关联搜索的召回率测试结果仅供参考。关联搜索的召回率会因所使用的关联词表的不同而不同。</p>
+<h3 id="_7">测试结果<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">keyword</th>
+<th align="center">total</th>
+<th align="center">hit</th>
+<th align="center">valid hit</th>
+<th align="center">recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>food</code></td>
+<td align="center">2838</td>
+<td align="center">1468</td>
+<td align="center">1468</td>
+<td align="center">0.517</td>
+</tr>
+<tr>
+<td align="center">title</td>
+<td align="center"><code>delicious</code></td>
+<td align="center">5029</td>
+<td align="center">1468</td>
+<td align="center">858</td>
+<td align="center">0.170</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filter"><code>Filter</code><a class="headerlink" href="#filter" title="Permanent link">&para;</a></h2>
+<h3 id="_8">测试方式<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>与 <code>perfect</code> 完全类似，不过增加了搜索限制范围，注意对于 <code>tag</code> 检出的要求，针对用户输入的 <code>tags</code> ，遍历图库时，只有 <strong>完全包含</strong> 用户输入的所有 <code>tags</code> 的图片才应被检出，也即用户输入 <code>tags</code> 应是检出图片真实 <code>tag</code> 的子集，理论上由于判断标准完全固定，搜索 API 采用相同逻辑， 召回率测试结果理论为 "1" 。</p>
+<h3 id="_9">测试结果<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th align="center">width</th>
+<th align="center">height</th>
+<th align="center">duration</th>
+<th align="center">tags</th>
+<th align="center">total</th>
+<th align="center">hit</th>
+<th align="center">valid hit</th>
+<th align="center">recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">[0, 400]</td>
+<td align="center">[0, 400]</td>
+<td align="center">[1, 2]</td>
+<td align="center">-</td>
+<td align="center">1539</td>
+<td align="center">1539</td>
+<td align="center">1539</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">[300, 1000]</td>
+<td align="center">[300, 1000]</td>
+<td align="center">[0, 2]</td>
+<td align="center">-</td>
+<td align="center">1429</td>
+<td align="center">1429</td>
+<td align="center">1429</td>
+<td align="center">1.00</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><code>['dog', 'pet']</code></td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">4</td>
+<td align="center">1.00</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -1006,10 +1176,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate", "content.tooltips", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "content.tooltips", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
